@@ -18,9 +18,12 @@ interface Destination {
 
 interface PhotoGalleryProps {
   destinations: Destination[];
+  onUploadPhotos?: () => void;
+  onLikePhoto?: (photoTitle: string) => void;
+  onSharePhoto?: (photoTitle: string) => void;
 }
 
-const PhotoGallery = ({ destinations }: PhotoGalleryProps) => {
+const PhotoGallery = ({ destinations, onUploadPhotos, onLikePhoto, onSharePhoto }: PhotoGalleryProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   // Additional gallery images showcasing Mozambique's beauty
@@ -147,10 +150,20 @@ const PhotoGallery = ({ destinations }: PhotoGalleryProps) => {
                       <p className="text-sm opacity-90">{image.location}</p>
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="secondary" className="bg-white/20 hover:bg-white/30">
+                      <Button 
+                        size="sm" 
+                        variant="secondary" 
+                        className="bg-white/20 hover:bg-white/30"
+                        onClick={() => onLikePhoto?.(image.title)}
+                      >
                         <Heart className="h-4 w-4" />
                       </Button>
-                      <Button size="sm" variant="secondary" className="bg-white/20 hover:bg-white/30">
+                      <Button 
+                        size="sm" 
+                        variant="secondary" 
+                        className="bg-white/20 hover:bg-white/30"
+                        onClick={() => onSharePhoto?.(image.title)}
+                      >
                         <Share2 className="h-4 w-4" />
                       </Button>
                     </div>
@@ -169,7 +182,7 @@ const PhotoGallery = ({ destinations }: PhotoGalleryProps) => {
         <p className="text-muted-foreground mb-4">
           Have you visited these amazing places? Share your photos with fellow travelers!
         </p>
-        <Button>
+        <Button onClick={onUploadPhotos}>
           Upload Photos
         </Button>
       </Card>

@@ -17,9 +17,11 @@ interface Destination {
 
 interface DestinationCardProps {
   destination: Destination;
+  onExplore?: (destination: Destination) => void;
+  onViewOnMap?: (destination: Destination) => void;
 }
 
-const DestinationCard = ({ destination }: DestinationCardProps) => {
+const DestinationCard = ({ destination, onExplore, onViewOnMap }: DestinationCardProps) => {
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
       <div className="relative">
@@ -64,9 +66,22 @@ const DestinationCard = ({ destination }: DestinationCardProps) => {
             </div>
           </div>
           
-          <Button className="w-full" size="sm">
-            Explore Destination
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              className="flex-1" 
+              size="sm"
+              onClick={() => onExplore?.(destination)}
+            >
+              Explore Destination
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => onViewOnMap?.(destination)}
+            >
+              <MapPin className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

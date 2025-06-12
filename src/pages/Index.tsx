@@ -1,206 +1,253 @@
 
 import { useState } from "react";
-import { MapPin, Camera, Sun, Waves, Mountain, Trees } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { MapPin, Camera, Compass, Heart } from "lucide-react";
 import Header from "@/components/Header";
 import DestinationCard from "@/components/DestinationCard";
 import MapView from "@/components/MapView";
 import PhotoGallery from "@/components/PhotoGallery";
+import { useToast } from "@/hooks/use-toast";
+
+interface Destination {
+  id: number;
+  name: string;
+  location: string;
+  description: string;
+  image: string;
+  highlights: string[];
+  bestTime: string;
+  coordinates: [number, number];
+}
 
 const Index = () => {
-  const [activeView, setActiveView] = useState<'destinations' | 'map' | 'gallery'>('destinations');
+  const [activeTab, setActiveTab] = useState("destinations");
+  const { toast } = useToast();
 
-  const destinations = [
+  const destinations: Destination[] = [
     {
       id: 1,
-      name: "Bazaruto Archipelago",
-      location: "Inhambane Province",
-      description: "Pristine islands with crystal-clear waters, perfect for diving and marine life observation.",
-      image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=800&h=600&fit=crop",
-      highlights: ["Marine Reserve", "Dugong Sanctuary", "Traditional Dhow Trips"],
+      name: "Gorongosa National Park",
+      location: "Sofala Province",
+      description: "One of Africa's greatest wildlife restoration stories, home to elephants, lions, and diverse ecosystems in the heart of Mozambique.",
+      image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=800&h=600&fit=crop",
+      highlights: ["Wildlife Safari", "Bird Watching", "Conservation Tours", "Cultural Visits"],
       bestTime: "May - October",
-      coordinates: [-22.1, 35.4]
+      coordinates: [-18.9744, 34.3517] as [number, number]
     },
     {
       id: 2,
-      name: "Gorongosa National Park",
-      location: "Sofala Province",
-      description: "Mozambique's premier wildlife destination, featuring diverse ecosystems and remarkable conservation success.",
-      image: "https://images.unsplash.com/photo-1439886183900-e79ec0057170?w=800&h=600&fit=crop",
-      highlights: ["Big Game Safari", "Mount Gorongosa", "Bird Watching"],
-      bestTime: "May - September",
-      coordinates: [-18.7, 34.0]
+      name: "Bazaruto Archipelago",
+      location: "Inhambane Province",
+      description: "A pristine marine paradise with crystal-clear waters, coral reefs, and traditional dhow sailing experiences.",
+      image: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop",
+      highlights: ["Snorkeling", "Diving", "Dhow Sailing", "Beach Relaxation"],
+      bestTime: "April - September",
+      coordinates: [-21.5423, 35.4515] as [number, number]
     },
     {
       id: 3,
       name: "Chimanimani Mountains",
-      location: "Manica Province", 
-      description: "Dramatic mountain landscapes with hiking trails, waterfalls, and unique flora.",
-      image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=600&fit=crop",
-      highlights: ["Hiking Trails", "Endemic Plants", "Rock Formations"],
-      bestTime: "April - August",
-      coordinates: [-19.8, 33.0]
+      location: "Manica Province",
+      description: "Dramatic mountain landscapes with waterfalls, hiking trails, and unique flora in Mozambique's eastern highlands.",
+      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+      highlights: ["Hiking", "Waterfalls", "Mountain Views", "Endemic Plants"],
+      bestTime: "May - August",
+      coordinates: [-19.8167, 33.0000] as [number, number]
     },
     {
       id: 4,
-      name: "Ilha de Moçambique",
-      location: "Nampula Province",
-      description: "UNESCO World Heritage site with rich history, colonial architecture, and cultural significance.",
-      image: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&h=600&fit=crop",
-      highlights: ["UNESCO Heritage", "Historic Architecture", "Cultural Tours"],
-      bestTime: "May - October",
-      coordinates: [-15.0, 40.7]
-    },
-    {
-      id: 5,
       name: "Quirimbas Archipelago",
       location: "Cabo Delgado Province",
-      description: "Remote tropical paradise with coral reefs, traditional fishing villages, and untouched beaches.",
-      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=600&fit=crop",
-      highlights: ["Coral Reefs", "Traditional Villages", "Pristine Beaches"],
-      bestTime: "April - November",
-      coordinates: [-12.3, 40.6]
-    },
-    {
-      id: 6,
-      name: "Niassa Reserve",
-      location: "Niassa Province",
-      description: "Africa's largest wildlife reserve with diverse ecosystems and authentic safari experiences.",
-      image: "https://images.unsplash.com/photo-1466721591366-2d5fba72006d?w=800&h=600&fit=crop",
-      highlights: ["Wildlife Reserve", "Remote Safari", "Conservation Area"],
-      bestTime: "May - October",
-      coordinates: [-13.5, 37.0]
+      description: "Remote islands with pristine beaches, coral reefs, and rich Swahili cultural heritage in northern Mozambique.",
+      image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
+      highlights: ["Island Hopping", "Cultural Heritage", "Fishing", "Pristine Beaches"],
+      bestTime: "June - November",
+      coordinates: [-12.3667, 40.7167] as [number, number]
     }
   ];
+
+  const handleExploreDestination = (destination: Destination) => {
+    toast({
+      title: `Exploring ${destination.name}`,
+      description: `Get ready to discover the wonders of ${destination.location}!`,
+    });
+    
+    // Here you could navigate to a detailed destination page
+    console.log("Navigating to destination:", destination);
+  };
+
+  const handleViewOnMap = (destination: Destination) => {
+    setActiveTab("map");
+    toast({
+      title: "Map View",
+      description: `Showing ${destination.name} on the map`,
+    });
+    
+    // Here you could center the map on the destination coordinates
+    console.log("Centering map on:", destination.coordinates);
+  };
+
+  const handleLocationServices = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          toast({
+            title: "Location Found!",
+            description: `Your coordinates: ${position.coords.latitude.toFixed(4)}, ${position.coords.longitude.toFixed(4)}`,
+          });
+        },
+        (error) => {
+          toast({
+            title: "Location Error",
+            description: "Unable to get your location. Please check your browser settings.",
+          });
+        }
+      );
+    } else {
+      toast({
+        title: "Not Supported",
+        description: "Geolocation is not supported by this browser.",
+      });
+    }
+  };
+
+  const handleUploadPhotos = () => {
+    // Create a file input element
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.multiple = true;
+    
+    input.onchange = (e) => {
+      const files = (e.target as HTMLInputElement).files;
+      if (files && files.length > 0) {
+        toast({
+          title: "Photos Selected!",
+          description: `${files.length} photo(s) ready to upload. Upload functionality coming soon!`,
+        });
+      }
+    };
+    
+    input.click();
+  };
+
+  const handleLikePhoto = (photoTitle: string) => {
+    toast({
+      title: "Photo Liked!",
+      description: `You liked "${photoTitle}"`,
+    });
+  };
+
+  const handleSharePhoto = (photoTitle: string) => {
+    if (navigator.share) {
+      navigator.share({
+        title: photoTitle,
+        text: `Check out this amazing photo from Mozambique: ${photoTitle}`,
+        url: window.location.href,
+      }).catch((error) => console.log('Error sharing:', error));
+    } else {
+      // Fallback for browsers that don't support Web Share API
+      toast({
+        title: "Share",
+        description: `Sharing "${photoTitle}" - Copy the URL to share!`,
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
       
       {/* Hero Section */}
-      <div className="relative h-96 overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?w=1200&h=800&fit=crop')"
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/60" />
-        <div className="relative h-full flex items-center justify-center text-center px-4">
-          <div className="max-w-4xl mx-auto text-white">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 animate-fade-in">
-              Discover Mozambique
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 animate-fade-in">
-              Explore pristine nature, rich culture, and unforgettable adventures
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm md:text-base">
-              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                <Waves className="h-5 w-5" />
-                <span>Pristine Beaches</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                <Mountain className="h-5 w-5" />
-                <span>Mountain Adventures</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                <Trees className="h-5 w-5" />
-                <span>Wildlife Safari</span>
-              </div>
-            </div>
-          </div>
+      <section className="relative h-96 bg-gradient-to-r from-primary/20 to-secondary/20 flex items-center justify-center">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200&h=600&fit=crop')] bg-cover bg-center opacity-30" />
+        <div className="relative text-center text-foreground max-w-2xl mx-auto px-4">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+            Discover Rural <span className="text-primary">Mozambique</span>
+          </h1>
+          <p className="text-lg md:text-xl mb-6 opacity-90">
+            Explore pristine nature, rich culture, and unforgettable experiences in Mozambique's hidden gems
+          </p>
+          <Button size="lg" className="bg-primary hover:bg-primary/90" onClick={() => setActiveTab("destinations")}>
+            <Compass className="mr-2 h-5 w-5" />
+            Start Exploring
+          </Button>
         </div>
-      </div>
+      </section>
 
-      {/* Navigation Tabs */}
-      <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-center gap-1 py-4">
-            <Button
-              variant={activeView === 'destinations' ? 'default' : 'ghost'}
-              onClick={() => setActiveView('destinations')}
-              className="flex items-center gap-2"
-            >
+      {/* Main Content */}
+      <section className="container mx-auto px-4 py-8">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-3 mb-8">
+            <TabsTrigger value="destinations" className="flex items-center gap-2">
               <MapPin className="h-4 w-4" />
               Destinations
-            </Button>
-            <Button
-              variant={activeView === 'map' ? 'default' : 'ghost'}
-              onClick={() => setActiveView('map')}
-              className="flex items-center gap-2"
-            >
-              <Mountain className="h-4 w-4" />
+            </TabsTrigger>
+            <TabsTrigger value="map" className="flex items-center gap-2">
+              <Compass className="h-4 w-4" />
               Map View
-            </Button>
-            <Button
-              variant={activeView === 'gallery' ? 'default' : 'ghost'}
-              onClick={() => setActiveView('gallery')}
-              className="flex items-center gap-2"
-            >
+            </TabsTrigger>
+            <TabsTrigger value="gallery" className="flex items-center gap-2">
               <Camera className="h-4 w-4" />
-              Gallery
-            </Button>
-          </div>
-        </div>
-      </div>
+              Photo Gallery
+            </TabsTrigger>
+          </TabsList>
 
-      {/* Content */}
-      <div className="container mx-auto px-4 py-8">
-        {activeView === 'destinations' && (
-          <div className="space-y-8">
+          <TabsContent value="destinations" className="space-y-6">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-4">Featured Destinations</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                From pristine archipelagos to dramatic mountains, discover the natural wonders that make Mozambique a unique destination.
+                Discover the natural wonders and cultural treasures of Mozambique's rural areas
               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {destinations.map((destination) => (
-                <DestinationCard key={destination.id} destination={destination} />
+                <div key={destination.id}>
+                  <DestinationCard 
+                    destination={destination} 
+                    onExplore={() => handleExploreDestination(destination)}
+                    onViewOnMap={() => handleViewOnMap(destination)}
+                  />
+                </div>
               ))}
             </div>
-          </div>
-        )}
+          </TabsContent>
 
-        {activeView === 'map' && (
-          <div className="space-y-6">
-            <div className="text-center">
+          <TabsContent value="map" className="space-y-6">
+            <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-4">Interactive Map</h2>
-              <p className="text-muted-foreground">
-                Explore Mozambique's destinations on our interactive map
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Explore destinations on our interactive map and plan your journey
               </p>
             </div>
-            <MapView destinations={destinations} />
-          </div>
-        )}
+            
+            <MapView 
+              destinations={destinations} 
+              onLocationServices={handleLocationServices}
+              onViewDestination={handleExploreDestination}
+            />
+          </TabsContent>
 
-        {activeView === 'gallery' && (
-          <div className="space-y-6">
-            <div className="text-center">
+          <TabsContent value="gallery" className="space-y-6">
+            <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-4">Photo Gallery</h2>
-              <p className="text-muted-foreground">
-                Stunning images from across Mozambique's diverse landscapes
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Stunning photography showcasing Mozambique's natural beauty and cultural richness
               </p>
             </div>
-            <PhotoGallery destinations={destinations} />
-          </div>
-        )}
-      </div>
-
-      {/* Footer */}
-      <footer className="bg-primary text-primary-foreground py-8 mt-16">
-        <div className="container mx-auto px-4 text-center">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Sun className="h-6 w-6" />
-            <span className="text-xl font-semibold">Discover Mozambique</span>
-          </div>
-          <p className="text-primary-foreground/80">
-            Promoting sustainable tourism in rural Mozambique
-          </p>
-        </div>
-      </footer>
+            
+            <PhotoGallery 
+              destinations={destinations}
+              onUploadPhotos={handleUploadPhotos}
+              onLikePhoto={handleLikePhoto}
+              onSharePhoto={handleSharePhoto}
+            />
+          </TabsContent>
+        </Tabs>
+      </section>
     </div>
   );
 };

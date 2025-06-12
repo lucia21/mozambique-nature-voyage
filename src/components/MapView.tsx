@@ -16,9 +16,11 @@ interface Destination {
 
 interface MapViewProps {
   destinations: Destination[];
+  onLocationServices?: () => void;
+  onViewDestination?: (destination: Destination) => void;
 }
 
-const MapView = ({ destinations }: MapViewProps) => {
+const MapView = ({ destinations, onLocationServices, onViewDestination }: MapViewProps) => {
   return (
     <div className="space-y-6">
       {/* Map Placeholder - In a real app, this would integrate with Google Maps or Mapbox */}
@@ -30,7 +32,7 @@ const MapView = ({ destinations }: MapViewProps) => {
             <p className="text-muted-foreground mb-4">
               Map integration coming soon! For now, explore our destinations below.
             </p>
-            <Button variant="outline">
+            <Button variant="outline" onClick={onLocationServices}>
               Enable Location Services
             </Button>
           </div>
@@ -58,7 +60,11 @@ const MapView = ({ destinations }: MapViewProps) => {
                     {destination.description}
                   </p>
                 </div>
-                <Button size="sm" variant="outline">
+                <Button 
+                  size="sm" 
+                  variant="outline"
+                  onClick={() => onViewDestination?.(destination)}
+                >
                   View
                 </Button>
               </div>
