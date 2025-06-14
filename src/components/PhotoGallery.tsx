@@ -26,13 +26,43 @@ interface PhotoGalleryProps {
 const PhotoGallery = ({ destinations, onUploadPhotos, onLikePhoto, onSharePhoto }: PhotoGalleryProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  // Additional gallery images showcasing Mozambique's beauty
+  // Enhanced gallery with more rural Mozambique imagery
   const galleryImages = [
     {
       url: "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&h=600&fit=crop",
       title: "Wildlife in Gorongosa",
       category: "wildlife",
       location: "Gorongosa National Park"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1466721591366-2d5fba72006d?w=800&h=600&fit=crop",
+      title: "Antelope and Zebra",
+      category: "wildlife",
+      location: "Niassa Reserve"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1493962853295-0fd70327578a?w=800&h=600&fit=crop",
+      title: "Rural Cattle",
+      category: "rural",
+      location: "Inhambane Province"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?w=800&h=600&fit=crop",
+      title: "Forest Cattle",
+      category: "rural",
+      location: "Manica Province"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1485833077593-4278bba3f11f?w=800&h=600&fit=crop",
+      title: "Rural Wildlife",
+      category: "wildlife",
+      location: "Tete Province"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1469041797191-50ace28483c3?w=800&h=600&fit=crop",
+      title: "Desert Wildlife",
+      category: "wildlife",
+      location: "Gaza Province"
     },
     {
       url: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=800&h=600&fit=crop",
@@ -63,6 +93,36 @@ const PhotoGallery = ({ destinations, onUploadPhotos, onLikePhoto, onSharePhoto 
       title: "Mountain Landscape",
       category: "mountains",
       location: "Chimanimani"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop",
+      title: "Rural Village",
+      category: "rural",
+      location: "Zambézia Province"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=800&h=600&fit=crop",
+      title: "African Savanna",
+      category: "nature",
+      location: "Gorongosa"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop",
+      title: "Pristine Coastline",
+      category: "beaches",
+      location: "Cabo Delgado"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+      title: "Mountain Vista",
+      category: "mountains",
+      location: "Manica Highlands"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
+      title: "Island Paradise",
+      category: "beaches",
+      location: "Quirimbas Islands"
     }
   ];
 
@@ -72,7 +132,8 @@ const PhotoGallery = ({ destinations, onUploadPhotos, onLikePhoto, onSharePhoto 
     { id: 'wildlife', name: 'Wildlife', count: galleryImages.filter(img => img.category === 'wildlife').length },
     { id: 'nature', name: 'Nature', count: galleryImages.filter(img => img.category === 'nature').length },
     { id: 'beaches', name: 'Beaches', count: galleryImages.filter(img => img.category === 'beaches').length },
-    { id: 'mountains', name: 'Mountains', count: galleryImages.filter(img => img.category === 'mountains').length }
+    { id: 'mountains', name: 'Mountains', count: galleryImages.filter(img => img.category === 'mountains').length },
+    { id: 'rural', name: 'Rural Life', count: galleryImages.filter(img => img.category === 'rural').length }
   ];
 
   const getFilteredImages = () => {
