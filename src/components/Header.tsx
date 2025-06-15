@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Menu, X, Sun, MapPin } from "lucide-react";
+import { Menu, X, Users, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Header = () => {
@@ -13,27 +13,27 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center gap-2">
             <div className="p-2 bg-primary rounded-lg">
-              <Sun className="h-6 w-6 text-primary-foreground" />
+              <Heart className="h-6 w-6 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="font-bold text-lg">Discover Mozambique</h1>
-              <p className="text-xs text-muted-foreground">Rural Tourism Guide</p>
+              <h1 className="font-bold text-lg">Nossa Voz Moçambique</h1>
+              <p className="text-xs text-muted-foreground">Community Stories Platform</p>
             </div>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
-            <a href="#destinations" className="text-sm font-medium hover:text-primary transition-colors">
-              Destinations
+            <a href="#stories" className="text-sm font-medium hover:text-primary transition-colors">
+              Community Stories
             </a>
-            <a href="#experiences" className="text-sm font-medium hover:text-primary transition-colors">
-              Experiences
+            <a href="#communities" className="text-sm font-medium hover:text-primary transition-colors">
+              Our Communities
             </a>
-            <a href="#culture" className="text-sm font-medium hover:text-primary transition-colors">
-              Culture
+            <a href="#share" className="text-sm font-medium hover:text-primary transition-colors">
+              Share Your Story
             </a>
-            <a href="#plan" className="text-sm font-medium hover:text-primary transition-colors">
-              Plan Your Trip
+            <a href="#about" className="text-sm font-medium hover:text-primary transition-colors">
+              About Us
             </a>
           </nav>
 
@@ -53,35 +53,35 @@ const Header = () => {
           <div className="md:hidden py-4 border-t animate-fade-in">
             <nav className="flex flex-col gap-2">
               <a 
-                href="#destinations" 
+                href="#stories" 
                 className="p-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4" />
-                  Destinations
+                  <Users className="h-4 w-4" />
+                  Community Stories
                 </div>
               </a>
               <a 
-                href="#experiences" 
+                href="#communities" 
                 className="p-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Experiences
+                Our Communities
               </a>
               <a 
-                href="#culture" 
+                href="#share" 
                 className="p-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Culture
+                Share Your Story
               </a>
               <a 
-                href="#plan" 
+                href="#about" 
                 className="p-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Plan Your Trip
+                About Us
               </a>
             </nav>
           </div>
