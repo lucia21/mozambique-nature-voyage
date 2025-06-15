@@ -46,9 +46,9 @@ const Index = () => {
       community: "Nampula Village",
       province: "Nampula",
       author: "Ana Macamo",
-      description: "In our village, every woman learns to weave capulanas. Each pattern tells a story of our ancestors and our hopes for the future.",
+      description: "In our village, every woman learns to weave capulanas. Each pattern tells a story of our ancestors and our hopes for the future. The bright colors represent our joy and resilience.",
       image: "https://images.unsplash.com/photo-1594736797933-d0c501ba2fe8?w=800&h=600&fit=crop",
-      category: "crafts",
+      category: "traditional_clothes",
       date: "2024-01-10",
       coordinates: [-15.1165, 39.2666] as [number, number]
     },
@@ -58,9 +58,9 @@ const Index = () => {
       community: "Chokwe",
       province: "Gaza",
       author: "João Sitoe",
-      description: "The marimba is the heart of our celebrations. Our children learn to play as soon as they can hold the mallets.",
+      description: "The marimba is the heart of our celebrations. Our children learn to play as soon as they can hold the mallets, keeping our musical heritage alive.",
       image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
-      category: "music",
+      category: "traditional_dances",
       date: "2024-01-08",
       coordinates: [-24.5331, 33.0020] as [number, number]
     },
@@ -75,6 +75,78 @@ const Index = () => {
       category: "agriculture",
       date: "2024-01-05",
       coordinates: [-14.1487, 34.1760] as [number, number]
+    },
+    {
+      id: 5,
+      title: "Matapa and Xima: Our Daily Bread",
+      community: "Maputo Rural",
+      province: "Maputo",
+      author: "Esperança Mabunda",
+      description: "Every morning, we prepare xima and matapa using recipes passed down through generations. The cassava leaves are picked fresh, and we grind our own corn for the perfect xima texture.",
+      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=800&h=600&fit=crop",
+      category: "traditional_food",
+      date: "2024-01-12",
+      coordinates: [-25.9686, 32.5804] as [number, number]
+    },
+    {
+      id: 6,
+      title: "Tufo Dance of the Island",
+      community: "Ilha de Moçambique",
+      province: "Nampula",
+      author: "Fatima Abdul",
+      description: "The Tufo dance connects us to our Swahili heritage. Women dance in beautiful capulanas while singing ancient songs that tell stories of love, life, and community.",
+      image: "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&h=600&fit=crop",
+      category: "traditional_dances",
+      date: "2024-01-07",
+      coordinates: [-15.0355, 40.7386] as [number, number]
+    },
+    {
+      id: 7,
+      title: "Elder Wisdom: Living with the Seasons",
+      community: "Chimoio",
+      province: "Manica",
+      author: "Mestre Joaquim",
+      description: "Our elders teach us to read the signs of nature - when to plant, when to harvest, how to preserve food for dry seasons. This knowledge has sustained us for centuries.",
+      image: "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&h=600&fit=crop",
+      category: "elder_wisdom",
+      date: "2024-01-03",
+      coordinates: [-19.1167, 33.4833] as [number, number]
+    },
+    {
+      id: 8,
+      title: "Makhuwa Language Stories",
+      community: "Nacala",
+      province: "Nampula",
+      author: "Amina Saide",
+      description: "We preserve our Makhuwa language through oral stories told under the moonlight. Each tale teaches values and keeps our cultural identity strong.",
+      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop",
+      category: "languages",
+      date: "2024-01-06",
+      coordinates: [-14.5428, 40.6732] as [number, number]
+    },
+    {
+      id: 9,
+      title: "Piri-Piri and Coconut Curry",
+      community: "Pemba",
+      province: "Cabo Delgado",
+      author: "Rashid Omar",
+      description: "Our coastal cuisine blends African and Arabic influences. Fresh seafood with coconut milk and piri-piri creates flavors that represent our diverse heritage.",
+      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=800&h=600&fit=crop",
+      category: "traditional_food",
+      date: "2024-01-09",
+      coordinates: [-12.9740, 40.5178] as [number, number]
+    },
+    {
+      id: 10,
+      title: "Shangaan Traditional Attire",
+      community: "Massingir",
+      province: "Gaza",
+      author: "Rosa Chauke",
+      description: "Our traditional Shangaan clothing tells stories through patterns and colors. Women wear xibelani skirts that dance with every step, celebrating our vibrant culture.",
+      image: "https://images.unsplash.com/photo-1594736797933-d0c501ba2fe8?w=800&h=600&fit=crop",
+      category: "traditional_clothes",
+      date: "2024-01-04",
+      coordinates: [-24.0167, 32.1667] as [number, number]
     }
   ];
 
@@ -150,7 +222,7 @@ const Index = () => {
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-4">Stories from Our Communities</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Real stories from real people sharing their culture, traditions, and daily life in rural Mozambique
+                Real stories from real people sharing their culture, traditions, food, dances, languages, and daily life in rural Mozambique
               </p>
             </div>
             
@@ -171,7 +243,7 @@ const Index = () => {
               <Users className="h-12 w-12 text-primary mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">Join Our Community</h3>
               <p className="text-muted-foreground mb-4">
-                Do you have a story to tell? Share your traditions, culture, and way of life with the world.
+                Do you have a story to tell? Share your traditions, culture, food, dances, and way of life with the world.
               </p>
               <Button onClick={handleShareStory}>
                 <Plus className="mr-2 h-4 w-4" />
@@ -195,7 +267,7 @@ const Index = () => {
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-4">Community Gallery</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Photos shared by our communities showcasing their daily life, traditions, and culture
+                Photos shared by our communities showcasing their daily life, traditions, culture, food, and celebrations
               </p>
             </div>
             

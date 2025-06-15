@@ -31,10 +31,30 @@ const CommunityStoryCard = ({ story, onLike, onConnect, onViewOnMap }: Community
       crafts: "bg-purple-100 text-purple-800",
       music: "bg-blue-100 text-blue-800",
       agriculture: "bg-green-100 text-green-800",
-      food: "bg-yellow-100 text-yellow-800",
-      celebrations: "bg-pink-100 text-pink-800"
+      traditional_food: "bg-yellow-100 text-yellow-800",
+      celebrations: "bg-pink-100 text-pink-800",
+      traditional_dances: "bg-red-100 text-red-800",
+      elder_wisdom: "bg-amber-100 text-amber-800",
+      languages: "bg-indigo-100 text-indigo-800",
+      traditional_clothes: "bg-violet-100 text-violet-800"
     };
     return colors[category as keyof typeof colors] || "bg-gray-100 text-gray-800";
+  };
+
+  const getCategoryLabel = (category: string) => {
+    const labels = {
+      traditions: "Traditions",
+      crafts: "Crafts",
+      music: "Music",
+      agriculture: "Agriculture",
+      traditional_food: "Traditional Food",
+      celebrations: "Celebrations",
+      traditional_dances: "Traditional Dances",
+      elder_wisdom: "Elder Wisdom",
+      languages: "Languages",
+      traditional_clothes: "Traditional Clothes"
+    };
+    return labels[category as keyof typeof labels] || category;
   };
 
   return (
@@ -47,7 +67,7 @@ const CommunityStoryCard = ({ story, onLike, onConnect, onViewOnMap }: Community
         />
         <div className="absolute top-4 right-4">
           <Badge className={getCategoryColor(story.category)}>
-            {story.category}
+            {getCategoryLabel(story.category)}
           </Badge>
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

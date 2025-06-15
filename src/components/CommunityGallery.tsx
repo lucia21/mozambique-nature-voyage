@@ -27,7 +27,7 @@ interface CommunityGalleryProps {
 const CommunityGallery = ({ stories, onUploadPhoto, onLikePhoto }: CommunityGalleryProps) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  // Additional community photos
+  // Additional community photos showcasing Mozambican culture
   const communityPhotos = [
     {
       url: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop",
@@ -46,38 +46,55 @@ const CommunityGallery = ({ stories, onUploadPhoto, onLikePhoto }: CommunityGall
     {
       url: "https://images.unsplash.com/photo-1466721591366-2d5fba72006d?w=800&h=600&fit=crop",
       title: "Wildlife Conservation",
-      category: "environment",
+      category: "traditions",
       community: "Niassa Reserve",
       author: "Conservation Group"
     },
     {
       url: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=800&h=600&fit=crop",
       title: "Sacred Landscapes",
-      category: "traditions",
+      category: "elder_wisdom",
       community: "Gorongosa",
       author: "Elders Council"
     },
     {
-      url: "https://images.unsplash.com/photo-1594736797933-d0c501ba2fe8?w=800&h=600&fit=crop",
-      title: "Artisan Crafts",
-      category: "crafts",
-      community: "Nampula",
-      author: "Women's Collective"
+      url: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=800&h=600&fit=crop",
+      title: "Traditional Cuisine",
+      category: "traditional_food",
+      community: "Maputo Rural",
+      author: "Community Cooks"
     },
     {
-      url: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
-      title: "Musical Heritage",
-      category: "music",
-      community: "Gaza Province",
-      author: "Youth Orchestra"
+      url: "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&h=600&fit=crop",
+      title: "Festival Dancing",
+      category: "traditional_dances",
+      community: "Pemba",
+      author: "Cultural Group"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&h=600&fit=crop",
+      title: "Elder Teaching",
+      category: "elder_wisdom",
+      community: "Chimoio",
+      author: "Community Elders"
+    },
+    {
+      url: "https://images.unsplash.com/photo-1469041797191-50ace28483c3?w=800&h=600&fit=crop",
+      title: "Traditional Transport",
+      category: "daily_life",
+      community: "Tete Province",
+      author: "Rural Community"
     }
   ];
 
   const categories = [
     { id: 'all', name: 'All Photos', count: stories.length + communityPhotos.length },
     { id: 'traditions', name: 'Traditions', count: [...stories, ...communityPhotos].filter(item => item.category === 'traditions').length },
-    { id: 'crafts', name: 'Crafts', count: [...stories, ...communityPhotos].filter(item => item.category === 'crafts').length },
-    { id: 'music', name: 'Music', count: [...stories, ...communityPhotos].filter(item => item.category === 'music').length },
+    { id: 'traditional_food', name: 'Traditional Food', count: [...stories, ...communityPhotos].filter(item => item.category === 'traditional_food').length },
+    { id: 'traditional_dances', name: 'Traditional Dances', count: [...stories, ...communityPhotos].filter(item => item.category === 'traditional_dances').length },
+    { id: 'traditional_clothes', name: 'Traditional Clothes', count: [...stories, ...communityPhotos].filter(item => item.category === 'traditional_clothes').length },
+    { id: 'elder_wisdom', name: 'Elder Wisdom', count: [...stories, ...communityPhotos].filter(item => item.category === 'elder_wisdom').length },
+    { id: 'languages', name: 'Languages', count: [...stories, ...communityPhotos].filter(item => item.category === 'languages').length },
     { id: 'agriculture', name: 'Agriculture', count: [...stories, ...communityPhotos].filter(item => item.category === 'agriculture').length },
     { id: 'daily_life', name: 'Daily Life', count: communityPhotos.filter(photo => photo.category === 'daily_life').length }
   ];
@@ -197,9 +214,9 @@ const CommunityGallery = ({ stories, onUploadPhoto, onLikePhoto }: CommunityGall
       {/* Upload Section */}
       <Card className="p-6 text-center bg-gradient-to-br from-primary/5 to-secondary/5">
         <Users className="h-12 w-12 text-primary mx-auto mb-4" />
-        <h3 className="text-lg font-semibold mb-2">Share Your Community's Story</h3>
+        <h3 className="text-lg font-semibold mb-2">Share Your Community's Cultural Heritage</h3>
         <p className="text-muted-foreground mb-4">
-          Upload photos that represent your community's culture, traditions, and daily life
+          Upload photos of your traditional food, dances, clothing, elder wisdom, and cultural practices
         </p>
         <Button onClick={onUploadPhoto}>
           <Camera className="mr-2 h-4 w-4" />
