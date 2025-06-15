@@ -78,18 +78,6 @@ const Index = () => {
     },
     {
       id: 5,
-      title: "Matapa and Xima: Our Daily Bread",
-      community: "Maputo Rural",
-      province: "Maputo",
-      author: "Esperança Mabunda",
-      description: "Every morning, we prepare xima and matapa using recipes passed down through generations. The cassava leaves are picked fresh, and we grind our own corn for the perfect xima texture.",
-      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=800&h=600&fit=crop",
-      category: "traditional_food",
-      date: "2024-01-12",
-      coordinates: [-25.9686, 32.5804] as [number, number]
-    },
-    {
-      id: 6,
       title: "Tufo Dance of the Island",
       community: "Ilha de Moçambique",
       province: "Nampula",
@@ -101,7 +89,7 @@ const Index = () => {
       coordinates: [-15.0355, 40.7386] as [number, number]
     },
     {
-      id: 7,
+      id: 6,
       title: "Elder Wisdom: Living with the Seasons",
       community: "Chimoio",
       province: "Manica",
@@ -113,7 +101,7 @@ const Index = () => {
       coordinates: [-19.1167, 33.4833] as [number, number]
     },
     {
-      id: 8,
+      id: 7,
       title: "Makhuwa Language Stories",
       community: "Nacala",
       province: "Nampula",
@@ -125,19 +113,7 @@ const Index = () => {
       coordinates: [-14.5428, 40.6732] as [number, number]
     },
     {
-      id: 9,
-      title: "Piri-Piri and Coconut Curry",
-      community: "Pemba",
-      province: "Cabo Delgado",
-      author: "Rashid Omar",
-      description: "Our coastal cuisine blends African and Arabic influences. Fresh seafood with coconut milk and piri-piri creates flavors that represent our diverse heritage.",
-      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=800&h=600&fit=crop",
-      category: "traditional_food",
-      date: "2024-01-09",
-      coordinates: [-12.9740, 40.5178] as [number, number]
-    },
-    {
-      id: 10,
+      id: 8,
       title: "Shangaan Traditional Attire",
       community: "Massingir",
       province: "Gaza",
@@ -222,7 +198,7 @@ const Index = () => {
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-4">Stories from Our Communities</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Real stories from real people sharing their culture, traditions, food, dances, languages, and daily life in rural Mozambique
+                Real stories from real people sharing their culture, traditions, dances, languages, and daily life in rural Mozambique
               </p>
             </div>
             
@@ -243,7 +219,7 @@ const Index = () => {
               <Users className="h-12 w-12 text-primary mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">Join Our Community</h3>
               <p className="text-muted-foreground mb-4">
-                Do you have a story to tell? Share your traditions, culture, food, dances, and way of life with the world.
+                Do you have a story to tell? Share your traditions, culture, dances, and way of life with the world.
               </p>
               <Button onClick={handleShareStory}>
                 <Plus className="mr-2 h-4 w-4" />
@@ -267,7 +243,7 @@ const Index = () => {
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-4">Community Gallery</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Photos shared by our communities showcasing their daily life, traditions, culture, food, and celebrations
+                Photos shared by our communities showcasing their daily life, traditions, culture, and celebrations
               </p>
             </div>
             

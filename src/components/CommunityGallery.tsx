@@ -58,13 +58,6 @@ const CommunityGallery = ({ stories, onUploadPhoto, onLikePhoto }: CommunityGall
       author: "Elders Council"
     },
     {
-      url: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=800&h=600&fit=crop",
-      title: "Traditional Cuisine",
-      category: "traditional_food",
-      community: "Maputo Rural",
-      author: "Community Cooks"
-    },
-    {
       url: "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&h=600&fit=crop",
       title: "Festival Dancing",
       category: "traditional_dances",
@@ -90,7 +83,6 @@ const CommunityGallery = ({ stories, onUploadPhoto, onLikePhoto }: CommunityGall
   const categories = [
     { id: 'all', name: 'All Photos', count: stories.length + communityPhotos.length },
     { id: 'traditions', name: 'Traditions', count: [...stories, ...communityPhotos].filter(item => item.category === 'traditions').length },
-    { id: 'traditional_food', name: 'Traditional Food', count: [...stories, ...communityPhotos].filter(item => item.category === 'traditional_food').length },
     { id: 'traditional_dances', name: 'Traditional Dances', count: [...stories, ...communityPhotos].filter(item => item.category === 'traditional_dances').length },
     { id: 'traditional_clothes', name: 'Traditional Clothes', count: [...stories, ...communityPhotos].filter(item => item.category === 'traditional_clothes').length },
     { id: 'elder_wisdom', name: 'Elder Wisdom', count: [...stories, ...communityPhotos].filter(item => item.category === 'elder_wisdom').length },
@@ -216,7 +208,7 @@ const CommunityGallery = ({ stories, onUploadPhoto, onLikePhoto }: CommunityGall
         <Users className="h-12 w-12 text-primary mx-auto mb-4" />
         <h3 className="text-lg font-semibold mb-2">Share Your Community's Cultural Heritage</h3>
         <p className="text-muted-foreground mb-4">
-          Upload photos of your traditional food, dances, clothing, elder wisdom, and cultural practices
+          Upload photos of your traditional dances, clothing, elder wisdom, and cultural practices
         </p>
         <Button onClick={onUploadPhoto}>
           <Camera className="mr-2 h-4 w-4" />
