@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -47,7 +46,7 @@ const Index = () => {
       province: "Nampula",
       author: "Ana Macamo",
       description: "In our village, every woman learns to weave capulanas. Each pattern tells a story of our ancestors and our hopes for the future. The bright colors represent our joy and resilience.",
-      image: "https://images.unsplash.com/photo-1594736797933-d0c501ba2fe8?w=800&h=600&fit=crop",
+      image: "/lovable-uploads/e783d8ae-ef1b-454e-ab3e-9a6139644650.png",
       category: "traditional_clothes",
       date: "2024-01-10",
       coordinates: [-15.1165, 39.2666] as [number, number]
@@ -59,8 +58,8 @@ const Index = () => {
       province: "Gaza",
       author: "João Sitoe",
       description: "The marimba is the heart of our celebrations. Our children learn to play as soon as they can hold the mallets, keeping our musical heritage alive.",
-      image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
-      category: "traditional_dances",
+      image: "/lovable-uploads/e52dee81-1633-42a1-bca3-d7a8392a500b.png",
+      category: "music",
       date: "2024-01-08",
       coordinates: [-24.5331, 33.0020] as [number, number]
     },
@@ -71,7 +70,7 @@ const Index = () => {
       province: "Tete",
       author: "Carlos Tembe",
       description: "We practice crop rotation and natural farming methods that our grandparents taught us, keeping our soil healthy for future generations.",
-      image: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&h=600&fit=crop",
+      image: "/lovable-uploads/579fcfdd-6151-407b-b407-66621ccecd8c.png",
       category: "agriculture",
       date: "2024-01-05",
       coordinates: [-14.1487, 34.1760] as [number, number]
@@ -83,7 +82,7 @@ const Index = () => {
       province: "Nampula",
       author: "Fatima Abdul",
       description: "The Tufo dance connects us to our Swahili heritage. Women dance in beautiful capulanas while singing ancient songs that tell stories of love, life, and community.",
-      image: "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&h=600&fit=crop",
+      image: "/lovable-uploads/63ed636a-ef49-427a-8561-bacca30e4d74.png",
       category: "traditional_dances",
       date: "2024-01-07",
       coordinates: [-15.0355, 40.7386] as [number, number]
@@ -102,18 +101,6 @@ const Index = () => {
     },
     {
       id: 7,
-      title: "Makhuwa Language Stories",
-      community: "Nacala",
-      province: "Nampula",
-      author: "Amina Saide",
-      description: "We preserve our Makhuwa language through oral stories told under the moonlight. Each tale teaches values and keeps our cultural identity strong.",
-      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop",
-      category: "languages",
-      date: "2024-01-06",
-      coordinates: [-14.5428, 40.6732] as [number, number]
-    },
-    {
-      id: 8,
       title: "Shangaan Traditional Attire",
       community: "Massingir",
       province: "Gaza",
@@ -179,10 +166,14 @@ const Index = () => {
       {/* Main Content */}
       <section className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
+          <TabsList className="grid w-full grid-cols-4 mb-8">
             <TabsTrigger value="stories" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
               Community Stories
+            </TabsTrigger>
+            <TabsTrigger value="languages" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Our Languages
             </TabsTrigger>
             <TabsTrigger value="map" className="flex items-center gap-2">
               <MapPin className="h-4 w-4" />
@@ -198,7 +189,7 @@ const Index = () => {
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-4">Stories from Our Communities</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Real stories from real people sharing their culture, traditions, dances, languages, and daily life in rural Mozambique
+                Real stories from real people sharing their culture, traditions, dances, and daily life in rural Mozambique
               </p>
             </div>
             
@@ -224,6 +215,81 @@ const Index = () => {
               <Button onClick={handleShareStory}>
                 <Plus className="mr-2 h-4 w-4" />
                 Share Your Story
+              </Button>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="languages" className="space-y-6">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold mb-4">Languages of Mozambique</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Celebrating the linguistic diversity across our beautiful country
+              </p>
+            </div>
+            
+            {/* Languages Hero Image */}
+            <div className="relative h-64 rounded-lg overflow-hidden mb-8">
+              <img
+                src="/lovable-uploads/e5eedeb9-ea38-4ef0-b173-f1a2a6fcf2d2.png"
+                alt="Languages of Mozambique"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute bottom-6 left-6 text-white">
+                <h3 className="text-2xl font-bold mb-2">Multilingual Mozambique</h3>
+                <p className="text-sm opacity-90">Welcome in many languages</p>
+              </div>
+            </div>
+
+            {/* Languages Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <Card className="p-6">
+                <h3 className="text-xl font-semibold mb-3">Portuguese</h3>
+                <p className="text-muted-foreground mb-2">Official Language</p>
+                <p className="text-sm">The official language of Mozambique, used in education, government, and formal communication.</p>
+              </Card>
+              
+              <Card className="p-6">
+                <h3 className="text-xl font-semibold mb-3">Makhuwa</h3>
+                <p className="text-muted-foreground mb-2">Northern Mozambique</p>
+                <p className="text-sm">The most widely spoken Bantu language in Mozambique, primarily in Nampula and Cabo Delgado provinces.</p>
+              </Card>
+              
+              <Card className="p-6">
+                <h3 className="text-xl font-semibold mb-3">Changana</h3>
+                <p className="text-muted-foreground mb-2">Southern Mozambique</p>
+                <p className="text-sm">Spoken mainly in Gaza and Maputo provinces, part of the Tsonga language family.</p>
+              </Card>
+              
+              <Card className="p-6">
+                <h3 className="text-xl font-semibold mb-3">Sena</h3>
+                <p className="text-muted-foreground mb-2">Central Mozambique</p>
+                <p className="text-sm">Primarily spoken in Sofala province, along the Zambezi River valley.</p>
+              </Card>
+              
+              <Card className="p-6">
+                <h3 className="text-xl font-semibold mb-3">Ndau</h3>
+                <p className="text-muted-foreground mb-2">Manica & Sofala</p>
+                <p className="text-sm">Spoken in the mountainous regions of Manica and parts of Sofala province.</p>
+              </Card>
+              
+              <Card className="p-6">
+                <h3 className="text-xl font-semibold mb-3">Nyanja</h3>
+                <p className="text-muted-foreground mb-2">Tete Province</p>
+                <p className="text-sm">Common in Tete province, especially near the borders with Malawi and Zambia.</p>
+              </Card>
+            </div>
+
+            {/* Language Preservation Call to Action */}
+            <Card className="p-6 text-center bg-gradient-to-br from-primary/5 to-secondary/5">
+              <Users className="h-12 w-12 text-primary mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Preserve Our Languages</h3>
+              <p className="text-muted-foreground mb-4">
+                Help us document and preserve the rich linguistic heritage of Mozambique by sharing stories in your native language.
+              </p>
+              <Button onClick={handleShareStory}>
+                <Plus className="mr-2 h-4 w-4" />
+                Share in Your Language
               </Button>
             </Card>
           </TabsContent>

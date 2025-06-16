@@ -86,8 +86,8 @@ const CommunityGallery = ({ stories, onUploadPhoto, onLikePhoto }: CommunityGall
     { id: 'traditional_dances', name: 'Traditional Dances', count: [...stories, ...communityPhotos].filter(item => item.category === 'traditional_dances').length },
     { id: 'traditional_clothes', name: 'Traditional Clothes', count: [...stories, ...communityPhotos].filter(item => item.category === 'traditional_clothes').length },
     { id: 'elder_wisdom', name: 'Elder Wisdom', count: [...stories, ...communityPhotos].filter(item => item.category === 'elder_wisdom').length },
-    { id: 'languages', name: 'Languages', count: [...stories, ...communityPhotos].filter(item => item.category === 'languages').length },
     { id: 'agriculture', name: 'Agriculture', count: [...stories, ...communityPhotos].filter(item => item.category === 'agriculture').length },
+    { id: 'music', name: 'Music', count: [...stories, ...communityPhotos].filter(item => item.category === 'music').length },
     { id: 'daily_life', name: 'Daily Life', count: communityPhotos.filter(photo => photo.category === 'daily_life').length }
   ];
 

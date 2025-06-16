@@ -34,7 +34,6 @@ const CommunityStoryCard = ({ story, onLike, onConnect, onViewOnMap }: Community
       celebrations: "bg-pink-100 text-pink-800",
       traditional_dances: "bg-red-100 text-red-800",
       elder_wisdom: "bg-amber-100 text-amber-800",
-      languages: "bg-indigo-100 text-indigo-800",
       traditional_clothes: "bg-violet-100 text-violet-800"
     };
     return colors[category as keyof typeof colors] || "bg-gray-100 text-gray-800";
@@ -49,7 +48,6 @@ const CommunityStoryCard = ({ story, onLike, onConnect, onViewOnMap }: Community
       celebrations: "Celebrations",
       traditional_dances: "Traditional Dances",
       elder_wisdom: "Elder Wisdom",
-      languages: "Languages",
       traditional_clothes: "Traditional Clothes"
     };
     return labels[category as keyof typeof labels] || category;
