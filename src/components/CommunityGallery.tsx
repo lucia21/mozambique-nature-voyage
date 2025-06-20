@@ -30,9 +30,44 @@ const CommunityGallery = ({ stories, onUploadPhoto, onLikePhoto }: CommunityGall
   // Additional community photos showcasing Mozambican culture
   const communityPhotos = [
     {
+      url: "/lovable-uploads/9eec9d57-5f5d-441b-accc-3ff47381265a.png",
+      title: "Traditional Fishing Dhow",
+      category: "traditions",
+      community: "Inhambane Coast",
+      author: "Fishing Community"
+    },
+    {
+      url: "/lovable-uploads/e28a1b77-3e08-4174-8235-39f5df2a429d.png",
+      title: "Cattle Herding",
+      category: "agriculture",
+      community: "Rural Communities",
+      author: "Local Herders"
+    },
+    {
+      url: "/lovable-uploads/95d8d759-a19d-4fb0-9f4b-972190223e18.png",
+      title: "Traditional Crafts",
+      category: "crafts",
+      community: "Artisan Villages",
+      author: "Craft Makers"
+    },
+    {
+      url: "/lovable-uploads/df55f51e-bda1-469e-8bb2-6fffac05d32f.png",
+      title: "Salt Production",
+      category: "traditions",
+      community: "Coastal Communities",
+      author: "Salt Workers"
+    },
+    {
+      url: "/lovable-uploads/cfe69b25-dc8d-4ab2-902e-c1956ae3bef5.png",
+      title: "Rice Farming",
+      category: "agriculture",
+      community: "Rural Farmers",
+      author: "Agricultural Community"
+    },
+    {
       url: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop",
       title: "Village Life",
-      category: "daily_life",
+      category: "traditions",
       community: "Zambézia Village",
       author: "Local Community"
     },
@@ -70,13 +105,6 @@ const CommunityGallery = ({ stories, onUploadPhoto, onLikePhoto }: CommunityGall
       category: "elder_wisdom",
       community: "Chimoio",
       author: "Community Elders"
-    },
-    {
-      url: "https://images.unsplash.com/photo-1469041797191-50ace28483c3?w=800&h=600&fit=crop",
-      title: "Traditional Transport",
-      category: "daily_life",
-      community: "Tete Province",
-      author: "Rural Community"
     }
   ];
 
@@ -88,7 +116,7 @@ const CommunityGallery = ({ stories, onUploadPhoto, onLikePhoto }: CommunityGall
     { id: 'elder_wisdom', name: 'Elder Wisdom', count: [...stories, ...communityPhotos].filter(item => item.category === 'elder_wisdom').length },
     { id: 'agriculture', name: 'Agriculture', count: [...stories, ...communityPhotos].filter(item => item.category === 'agriculture').length },
     { id: 'music', name: 'Music', count: [...stories, ...communityPhotos].filter(item => item.category === 'music').length },
-    { id: 'daily_life', name: 'Daily Life', count: communityPhotos.filter(photo => photo.category === 'daily_life').length }
+    { id: 'crafts', name: 'Crafts', count: communityPhotos.filter(photo => photo.category === 'crafts').length }
   ];
 
   const getFilteredImages = () => {
@@ -156,7 +184,7 @@ const CommunityGallery = ({ stories, onUploadPhoto, onLikePhoto }: CommunityGall
                   <div className="absolute bottom-0 left-0 right-0 p-3 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                     <h4 className="font-semibold text-sm mb-1">{image.title}</h4>
                     <p className="text-xs opacity-90">{image.community}</p>
-                    <p className="text-xs opacity-75">by {image.author}</p>
+                    {image.author && <p className="text-xs opacity-75">by {image.author}</p>}
                   </div>
                   <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <Camera className="h-5 w-5 text-white" />
@@ -176,7 +204,7 @@ const CommunityGallery = ({ stories, onUploadPhoto, onLikePhoto }: CommunityGall
                     <div>
                       <h3 className="text-xl font-bold mb-1">{image.title}</h3>
                       <p className="text-sm opacity-90">{image.community}</p>
-                      <p className="text-xs opacity-75">Shared by {image.author}</p>
+                      {image.author && <p className="text-xs opacity-75">Shared by {image.author}</p>}
                     </div>
                     <div className="flex gap-2">
                       <Button 

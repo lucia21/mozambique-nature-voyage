@@ -32,9 +32,9 @@ const Index = () => {
       title: "Traditional Fishing in Inhambane",
       community: "Praia do Tofo",
       province: "Inhambane",
-      author: "Maria Santos",
+      author: "",
       description: "Our community has been fishing these waters for generations. We use traditional dhows and pass down techniques from father to son, mother to daughter.",
-      image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=600&fit=crop",
+      image: "/lovable-uploads/9eec9d57-5f5d-441b-accc-3ff47381265a.png",
       category: "traditions",
       date: "2024-01-15",
       coordinates: [-23.8758, 35.5477] as [number, number]
@@ -42,10 +42,10 @@ const Index = () => {
     {
       id: 2,
       title: "Capulana Weaving Traditions",
-      community: "Nampula Village",
-      province: "Nampula",
-      author: "Ana Macamo",
-      description: "In our village, every woman learns to weave capulanas. Each pattern tells a story of our ancestors and our hopes for the future. The bright colors represent our joy and resilience.",
+      community: "",
+      province: "",
+      author: "",
+      description: "In our villages, every woman learns to weave capulanas. Each pattern tells a story of our ancestors and our hopes for the future. The bright colors represent our joy and resilience.",
       image: "/lovable-uploads/e783d8ae-ef1b-454e-ab3e-9a6139644650.png",
       category: "traditional_clothes",
       date: "2024-01-10",
@@ -56,7 +56,7 @@ const Index = () => {
       title: "Marimba Music in Our Community",
       community: "Chokwe",
       province: "Gaza",
-      author: "João Sitoe",
+      author: "",
       description: "The marimba is the heart of our celebrations. Our children learn to play as soon as they can hold the mallets, keeping our musical heritage alive.",
       image: "/lovable-uploads/e52dee81-1633-42a1-bca3-d7a8392a500b.png",
       category: "music",
@@ -66,9 +66,9 @@ const Index = () => {
     {
       id: 4,
       title: "Sustainable Farming Practices",
-      community: "Angónia",
-      province: "Tete",
-      author: "Carlos Tembe",
+      community: "Zona Sul",
+      province: "Maputo",
+      author: "",
       description: "We practice crop rotation and natural farming methods that our grandparents taught us, keeping our soil healthy for future generations.",
       image: "/lovable-uploads/579fcfdd-6151-407b-b407-66621ccecd8c.png",
       category: "agriculture",
@@ -80,7 +80,7 @@ const Index = () => {
       title: "Tufo Dance of the Island",
       community: "Ilha de Moçambique",
       province: "Nampula",
-      author: "Fatima Abdul",
+      author: "",
       description: "The Tufo dance connects us to our Swahili heritage. Women dance in beautiful capulanas while singing ancient songs that tell stories of love, life, and community.",
       image: "/lovable-uploads/63ed636a-ef49-427a-8561-bacca30e4d74.png",
       category: "traditional_dances",
@@ -92,24 +92,64 @@ const Index = () => {
       title: "Elder Wisdom: Living with the Seasons",
       community: "Chimoio",
       province: "Manica",
-      author: "Mestre Joaquim",
+      author: "",
       description: "Our elders teach us to read the signs of nature - when to plant, when to harvest, how to preserve food for dry seasons. This knowledge has sustained us for centuries.",
       image: "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=800&h=600&fit=crop",
       category: "elder_wisdom",
       date: "2024-01-03",
       coordinates: [-19.1167, 33.4833] as [number, number]
+    }
+  ];
+
+  // Rural communities for the map (different from main stories)
+  const mapCommunities: CommunityStory[] = [
+    {
+      id: 8,
+      title: "Rice Farming Community",
+      community: "Beira Rural",
+      province: "Sofala",
+      author: "",
+      description: "Traditional rice farming methods passed down through generations in rural Sofala province.",
+      image: "/lovable-uploads/cfe69b25-dc8d-4ab2-902e-c1956ae3bef5.png",
+      category: "agriculture",
+      date: "2024-01-01",
+      coordinates: [-19.8436, 34.8389] as [number, number]
     },
     {
-      id: 7,
-      title: "Shangaan Traditional Attire",
-      community: "Massingir",
+      id: 9,
+      title: "Cattle Herding Traditions",
+      community: "Rural Inhambane",
+      province: "Inhambane",
+      author: "",
+      description: "Young herders maintaining ancient cattle traditions in rural communities.",
+      image: "/lovable-uploads/e28a1b77-3e08-4174-8235-39f5df2a429d.png",
+      category: "traditions",
+      date: "2024-01-02",
+      coordinates: [-24.2, 35.0] as [number, number]
+    },
+    {
+      id: 10,
+      title: "Artisan Community",
+      community: "Rural Nampula",
+      province: "Nampula",
+      author: "",
+      description: "Traditional craft makers creating beautiful sculptures and pottery in rural villages.",
+      image: "/lovable-uploads/95d8d759-a19d-4fb0-9f4b-972190223e18.png",
+      category: "crafts",
+      date: "2024-01-03",
+      coordinates: [-15.5, 39.5] as [number, number]
+    },
+    {
+      id: 11,
+      title: "Salt Production Community",
+      community: "Rural Gaza",
       province: "Gaza",
-      author: "Rosa Chauke",
-      description: "Our traditional Shangaan clothing tells stories through patterns and colors. Women wear xibelani skirts that dance with every step, celebrating our vibrant culture.",
-      image: "https://images.unsplash.com/photo-1594736797933-d0c501ba2fe8?w=800&h=600&fit=crop",
-      category: "traditional_clothes",
+      author: "",
+      description: "Traditional salt harvesting methods using ancient techniques by the coast.",
+      image: "/lovable-uploads/df55f51e-bda1-469e-8bb2-6fffac05d32f.png",
+      category: "traditions",
       date: "2024-01-04",
-      coordinates: [-24.0167, 32.1667] as [number, number]
+      coordinates: [-24.5, 33.5] as [number, number]
     }
   ];
 
@@ -296,20 +336,20 @@ const Index = () => {
 
           <TabsContent value="map" className="space-y-6">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold mb-4">Communities Across Mozambique</h2>
+              <h2 className="text-3xl font-bold mb-4">Rural Communities Across Mozambique</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Discover the locations of our storytelling communities and connect with them
+                Discover rural communities and their traditional practices across our beautiful country
               </p>
             </div>
             
-            <CommunityMap stories={communityStories} onViewStory={handleConnectCommunity} />
+            <CommunityMap stories={mapCommunities} onViewStory={handleConnectCommunity} />
           </TabsContent>
 
           <TabsContent value="gallery" className="space-y-6">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-4">Community Gallery</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Photos shared by our communities showcasing their daily life, traditions, culture, and celebrations
+                Photos shared by our communities showcasing their traditions, culture, and celebrations
               </p>
             </div>
             

@@ -53,6 +53,8 @@ const CommunityStoryCard = ({ story, onLike, onConnect, onViewOnMap }: Community
     return labels[category as keyof typeof labels] || category;
   };
 
+  const showLocation = story.community || story.province;
+
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
       <div className="relative">
@@ -69,11 +71,15 @@ const CommunityStoryCard = ({ story, onLike, onConnect, onViewOnMap }: Community
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
         <div className="absolute bottom-4 left-4 text-white">
           <h3 className="text-xl font-bold mb-1">{story.title}</h3>
-          <div className="flex items-center gap-1 text-sm mb-1">
-            <MapPin className="h-3 w-3" />
-            {story.community}, {story.province}
-          </div>
-          <div className="text-xs opacity-90">by {story.author}</div>
+          {showLocation && (
+            <div className="flex items-center gap-1 text-sm mb-1">
+              <MapPin className="h-3 w-3" />
+              {story.community && story.province ? `${story.community}, ${story.province}` : story.community || story.province}
+            </div>
+          )}
+          {story.author && (
+            <div className="text-xs opacity-90">by {story.author}</div>
+          )}
         </div>
       </div>
       
