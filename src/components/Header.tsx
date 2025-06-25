@@ -1,91 +1,95 @@
 
-import { useState } from "react";
-import { Menu, X, Users, Heart } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
+import { User, LogOut, Settings } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Signed out",
+        description: "You have been successfully signed out."
+      });
+      navigate('/');
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to sign out.",
+        variant: "destructive"
+      });
+    }
+  };
 
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="p-2 bg-primary rounded-lg">
-              <Heart className="h-6 w-6 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="font-bold text-lg">Nossa Voz Moçambique</h1>
-              <p className="text-xs text-muted-foreground">Community Stories Platform</p>
-            </div>
-          </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-6">
-            <a href="#stories" className="text-sm font-medium hover:text-primary transition-colors">
-              Community Stories
-            </a>
-            <a href="#communities" className="text-sm font-medium hover:text-primary transition-colors">
-              Our Communities
-            </a>
-            <a href="#share" className="text-sm font-medium hover:text-primary transition-colors">
-              Share Your Story
-            </a>
-            <a href="#about" className="text-sm font-medium hover:text-primary transition-colors">
-              About Us
-            </a>
-          </nav>
-
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden py-4 border-t animate-fade-in">
-            <nav className="flex flex-col gap-2">
-              <a 
-                href="#stories" 
-                className="p-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4" />
-                  Community Stories
+    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+        <Link to="/" className="flex items-center space-x-2">
+          <h1 className="text-2xl font-bold text-primary">Nossa Voz</h1>
+          <span className="text-sm text-muted-foreground">Moçambique</span>
+        </Link>
+        
+        <nav className="flex items-center space-x-4">
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="" alt={user.email || ''} />
+                    <AvatarFallback>
+                      {user.email?.charAt(0).toUpperCase() || 'U'}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <div className="flex items-center justify-start gap-2 p-2">
+                  <div className="flex flex-col space-y-1 leading-none">
+                    <p className="font-medium">{user.email}</p>
+                  </div>
                 </div>
-              </a>
-              <a 
-                href="#communities" 
-                className="p-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Our Communities
-              </a>
-              <a 
-                href="#share" 
-                className="p-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Share Your Story
-              </a>
-              <a 
-                href="#about" 
-                className="p-2 text-sm font-medium hover:bg-muted rounded-md transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                About Us
-              </a>
-            </nav>
-          </div>
-        )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Settings className="mr-2 h-4 w-4" />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div className="flex items-center space-x-2">
+              <Button variant="ghost" asChild>
+                <Link to="/auth/login">Sign In</Link>
+              </Button>
+              <Button asChild>
+                <Link to="/auth/register">Get Started</Link>
+              </Button>
+            </div>
+          )}
+        </nav>
       </div>
     </header>
   );
