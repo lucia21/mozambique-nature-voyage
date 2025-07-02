@@ -1,7 +1,8 @@
-
+import InteractiveMap from './InteractiveMap';
 import { MapPin, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from 'react-router-dom';
 
 interface CommunityStory {
   id: number;
@@ -24,19 +25,10 @@ interface CommunityMapProps {
 const CommunityMap = ({ stories, onViewStory }: CommunityMapProps) => {
   return (
     <div className="space-y-6">
-      {/* Map Placeholder */}
-      <Card className="h-96 bg-gradient-to-br from-primary/10 to-secondary/10">
-        <CardContent className="h-full flex items-center justify-center">
-          <div className="text-center">
-            <MapPin className="h-16 w-16 text-primary mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Communities Map</h3>
-            <p className="text-muted-foreground mb-4">
-              Interactive map showing all participating communities across Mozambique.
-            </p>
-            <Button variant="outline">
-              View Full Map
-            </Button>
-          </div>
+      {/* Interactive Map */}
+      <Card className="overflow-hidden">
+        <CardContent className="p-0">
+          <InteractiveMap stories={stories} height="400px" />
         </CardContent>
       </Card>
 

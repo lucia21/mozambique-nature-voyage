@@ -9,6 +9,71 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      communities: {
+        Row: {
+          banner_image: string | null
+          coordinates: unknown | null
+          created_at: string
+          description: string | null
+          id: string
+          location: string | null
+          name: string
+          province: string | null
+          updated_at: string
+        }
+        Insert: {
+          banner_image?: string | null
+          coordinates?: unknown | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          location?: string | null
+          name: string
+          province?: string | null
+          updated_at?: string
+        }
+        Update: {
+          banner_image?: string | null
+          coordinates?: unknown | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          location?: string | null
+          name?: string
+          province?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      community_members: {
+        Row: {
+          community_id: string
+          id: string
+          joined_at: string
+          user_id: string
+        }
+        Insert: {
+          community_id: string
+          id?: string
+          joined_at?: string
+          user_id: string
+        }
+        Update: {
+          community_id?: string
+          id?: string
+          joined_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_members_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -38,6 +103,65 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      stories: {
+        Row: {
+          audio_url: string | null
+          category: string
+          community_id: string | null
+          coordinates: unknown | null
+          created_at: string
+          description: string
+          id: string
+          image_url: string | null
+          language: string | null
+          location: string | null
+          province: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          audio_url?: string | null
+          category: string
+          community_id?: string | null
+          coordinates?: unknown | null
+          created_at?: string
+          description: string
+          id?: string
+          image_url?: string | null
+          language?: string | null
+          location?: string | null
+          province?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          audio_url?: string | null
+          category?: string
+          community_id?: string | null
+          coordinates?: unknown | null
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          language?: string | null
+          location?: string | null
+          province?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stories_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
