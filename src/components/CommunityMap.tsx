@@ -1,8 +1,10 @@
+
 import InteractiveMap from './InteractiveMap';
 import { MapPin, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
+import type { Story } from '@/hooks/useStories';
 
 interface CommunityStory {
   id: number;
@@ -23,12 +25,36 @@ interface CommunityMapProps {
 }
 
 const CommunityMap = ({ stories, onViewStory }: CommunityMapProps) => {
+  // Convert CommunityStory to Story format for the InteractiveMap
+  const mappedStories: Story[] = stories.map(story => ({
+    id: story.id.toString(),
+    user_id: '',
+    community_id: null,
+    title: story.title,
+    description: story.description,
+    category: story.category,
+    language: 'pt',
+    image_url: story.image,
+    audio_url: null,
+    location: story.community,
+    province: story.province,
+    coordinates: null,
+    created_at: story.date,
+    updated_at: story.date,
+    profiles: {
+      full_name: story.author
+    },
+    communities: {
+      name: story.community
+    }
+  }));
+
   return (
     <div className="space-y-6">
       {/* Interactive Map */}
       <Card className="overflow-hidden">
         <CardContent className="p-0">
-          <InteractiveMap stories={stories} height="400px" />
+          <InteractiveMap stories={mappedStories} height="400px" />
         </CardContent>
       </Card>
 

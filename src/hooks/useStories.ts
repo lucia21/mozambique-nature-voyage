@@ -8,10 +8,10 @@ import type { Tables, TablesInsert } from '@/integrations/supabase/types';
 export type Story = Tables<'stories'> & {
   profiles?: {
     full_name: string | null;
-  };
+  } | null;
   communities?: {
     name: string;
-  };
+  } | null;
 };
 
 export type NewStory = TablesInsert<'stories'>;

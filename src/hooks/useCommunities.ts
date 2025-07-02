@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -21,12 +20,22 @@ export const useCommunities = () => {
         .from('communities')
         .select(`
           *,
-          stories(count),
-          community_members(count)
+          stories(*),
+          community_members(*)
         `);
 
       if (error) throw error;
-      return data as Community[];
+      
+      // Transform data to include counts
+      const communitiesWithCounts = data.map(community => ({
+        ...community,
+        _count: {
+          stories: community.stories?.length || 0,
+          community_members: community.community_members?.length || 0,
+        }
+      }));
+      
+      return communitiesWithCounts as Community[];
     },
   });
 };

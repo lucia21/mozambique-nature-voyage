@@ -95,17 +95,22 @@ const ShareStory = () => {
         audioUrl = await uploadFile.mutateAsync({ file: audioFile, path: audioPath });
       }
 
-      // Create story
-      await createStory.mutateAsync({
-        ...data,
+      // Create story with proper typing
+      const storyData = {
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        language: data.language || 'pt',
+        location: data.location || null,
+        province: data.province || null,
         user_id: user.id,
         image_url: imageUrl,
         audio_url: audioUrl,
-      });
+      };
 
+      await createStory.mutateAsync(storyData);
       navigate('/feed');
     } catch (error) {
-      // Error handling is done in the mutation
       console.error('Error creating story:', error);
     }
   };
