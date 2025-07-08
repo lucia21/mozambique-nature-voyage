@@ -12,6 +12,7 @@ import ShareStory from "./pages/ShareStory";
 import Communities from "./pages/Communities";
 import CommunityDetail from "./pages/CommunityDetail";
 import MapPage from "./pages/MapPage";
+import Map from "./pages/Map";
 import LoginForm from "./components/auth/LoginForm";
 import RegisterForm from "./components/auth/RegisterForm";
 import NotFound from "./pages/NotFound";
@@ -48,6 +49,7 @@ const App = () => (
             <Route path="/communities" element={<Communities />} />
             <Route path="/communities/:id" element={<CommunityDetail />} />
             <Route path="/map" element={<MapPage />} />
+            <Route path="/map-locations" element={<Map />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
