@@ -48,7 +48,8 @@ const App = () => (
             />
             <Route path="/communities" element={<Communities />} />
             <Route path="/communities/:id" element={<CommunityDetail />} />
-            <Route path="/map" element={<MapPage />} />
+            <Route path="/map" element={<Navigate to="/map/locations" replace />} />
+            <Route path="/map/locations" element={<Map />} />
             <Route path="/map-locations" element={<Map />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
