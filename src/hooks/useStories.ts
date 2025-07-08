@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -30,7 +29,15 @@ export const useStories = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return data as Story[];
+      
+      // Transform the data to match our Story type
+      const transformedData = data?.map(story => ({
+        ...story,
+        profiles: Array.isArray(story.profiles) ? story.profiles[0] : story.profiles,
+        communities: Array.isArray(story.communities) ? story.communities[0] : story.communities,
+      })) || [];
+
+      return transformedData as Story[];
     },
   });
 };
