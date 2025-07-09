@@ -11,15 +11,15 @@ const Feed = () => {
   const { toast } = useToast();
   const [likedStories, setLikedStories] = useState<Set<number>>(new Set());
 
-  // Updated sample stories - removed ones without pictures and beach pictures
+  // Updated sample stories for Mozambican rural communities
   const sampleStories = [
     {
       id: 1,
-      title: "Cattle Herding Traditions",
-      community: "Rural Mozambique",
+      title: "Pastoreio de Gado",
+      community: "Tete Rural",
       province: "Tete",
       author: "Pedro Muthemba",
-      description: "Young herders continue the ancient tradition of cattle herding across the vast landscapes of Mozambique. This practice connects us to our ancestors and teaches responsibility, patience, and respect for nature. The bond between herder and cattle represents harmony with our environment.",
+      description: "Os jovens pastores continuam a tradição antiga de pastorear gado pelas vastas paisagens de Moçambique. Esta prática conecta-nos aos nossos antepassados.",
       image: "/lovable-uploads/fb9c090c-e1c0-4cce-ab4a-fe7a98278869.png",
       category: "traditions",
       date: "2024-01-15",
@@ -27,11 +27,11 @@ const Feed = () => {
     },
     {
       id: 2,
-      title: "Traditional Art and Sculpture",
+      title: "Arte Tradicional",
       community: "Maputo",
       province: "Maputo",
       author: "Elisabete Sitoe",
-      description: "Our traditional sculptures and pottery tell stories of generations past. Each piece represents the soul of our culture, crafted with techniques passed down through families. These artistic expressions preserve our heritage and connect modern communities to ancient wisdom.",
+      description: "As nossas esculturas e cerâmica tradicionais contam histórias de gerações passadas. Cada peça representa a alma da nossa cultura.",
       image: "/lovable-uploads/48744a47-db91-40e5-965d-3376181d9e3a.png",
       category: "crafts",
       date: "2024-01-12",
@@ -39,11 +39,11 @@ const Feed = () => {
     },
     {
       id: 3,
-      title: "Mbira - The Soul of Our Music",
+      title: "Mbira - Nossa Música",
       community: "Inhambane",
       province: "Inhambane",
       author: "Armando Chissano",
-      description: "The mbira, our traditional thumb piano, carries the heartbeat of Mozambican culture. Each note connects us to spiritual ceremonies and community gatherings. This sacred instrument brings healing, storytelling, and unity to our people through its gentle melodies.",
+      description: "A mbira, o nosso piano tradicional, carrega o coração da cultura moçambicana. Cada nota conecta-nos às cerimónias espirituais.",
       image: "/lovable-uploads/6e6e84ae-4052-4978-80b1-a698004696c7.png",
       category: "music",
       date: "2024-01-10",
@@ -51,11 +51,11 @@ const Feed = () => {
     },
     {
       id: 4,
-      title: "Farming with Pride",
+      title: "Agricultura com Orgulho",
       community: "Nampula",
       province: "Nampula", 
       author: "João Mahanjane",
-      description: "Our farmers work the land with pride and traditional knowledge. From planting to harvest, every step connects us to the earth and our ancestors. The joy in our work reflects the deep satisfaction of feeding our communities and preserving agricultural traditions.",
+      description: "Os nossos agricultores trabalham a terra com orgulho e conhecimento tradicional. Do plantio à colheita, cada passo conecta-nos à terra.",
       image: "/lovable-uploads/022142ad-f998-4900-b101-3342cb726494.png",
       category: "agriculture",
       date: "2024-01-05",
@@ -63,11 +63,11 @@ const Feed = () => {
     },
     {
       id: 5,
-      title: "Community Unity and Culture",
+      title: "Unidade Comunitária",
       community: "Cabo Delgado",
       province: "Cabo Delgado",
       author: "Fatima Namashulua",
-      description: "Our traditional clothing and community gatherings celebrate the diversity and unity of Mozambican culture. The vibrant colors and patterns represent different regions and tribes coming together in harmony, sharing stories and preserving our collective identity.",
+      description: "As nossas roupas tradicionais e encontros comunitários celebram a diversidade e unidade da cultura moçambicana.",
       image: "/lovable-uploads/6f68d633-a5bc-4700-b583-65b82e702a3a.png",
       category: "traditional_clothes",
       date: "2024-01-03",
@@ -80,14 +80,14 @@ const Feed = () => {
     if (likedStories.has(storyId)) {
       newLikedStories.delete(storyId);
       toast({
-        title: "Support removed",
-        description: "You removed your support for this story.",
+        title: "✅ Apoio removido",
+        description: "Removeu o seu apoio desta história.",
       });
     } else {
       newLikedStories.add(storyId);
       toast({
-        title: "Story supported! ❤️",
-        description: "Thank you for supporting this community story.",
+        title: "❤️ História apoiada!",
+        description: "Obrigado por apoiar esta história da comunidade.",
       });
     }
     setLikedStories(newLikedStories);
@@ -95,8 +95,8 @@ const Feed = () => {
 
   const handleConnect = (storyId: number) => {
     toast({
-      title: "Connection request sent! 🤝",
-      description: "Your connection request has been sent to the storyteller.",
+      title: "🤝 Pedido enviado!",
+      description: "O seu pedido de conexão foi enviado ao contador da história.",
     });
   };
 
@@ -104,11 +104,9 @@ const Feed = () => {
     const story = sampleStories.find(s => s.id === storyId);
     if (story) {
       toast({
-        title: "Opening map view 📍",
-        description: `Showing ${story.title} location on the map.`,
+        title: "📍 Ver no mapa",
+        description: `A mostrar localização de ${story.title} no mapa.`,
       });
-      // Here you could navigate to the map page with the story location
-      // For now, just show a toast
     }
   };
 
@@ -118,7 +116,8 @@ const Feed = () => {
         <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-center min-h-[400px]">
-            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+            <Loader2 className="h-16 w-16 animate-spin text-primary" />
+            <span className="ml-4 text-xl">A carregar histórias...</span>
           </div>
         </div>
       </div>
@@ -131,8 +130,14 @@ const Feed = () => {
         <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="text-center py-12">
-            <h2 className="text-3xl font-bold text-destructive mb-4">Unable to Load Stories</h2>
-            <p className="text-muted-foreground text-lg">Please refresh the page to try again.</p>
+            <h2 className="text-4xl font-bold text-destructive mb-6">Não foi possível carregar as histórias</h2>
+            <p className="text-muted-foreground text-xl mb-8">Por favor, toque para tentar novamente.</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="bg-primary text-primary-foreground px-8 py-4 rounded-xl text-lg font-semibold"
+            >
+              Tentar Novamente
+            </button>
           </div>
         </div>
       </div>
@@ -147,30 +152,30 @@ const Feed = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <div className="container mx-auto px-4 py-6 max-w-2xl">
-        {/* Instagram-style header */}
+        {/* Simplified header for rural users */}
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Community Stories
+          <h1 className="text-4xl font-bold mb-4 text-primary">
+            Histórias da Nossa Comunidade
           </h1>
-          <p className="text-muted-foreground text-lg">
-            Discover the beauty and culture of Moçambique
+          <p className="text-muted-foreground text-xl leading-relaxed">
+            Descubra a beleza e cultura de Moçambique
           </p>
           {showSampleStories && (
-            <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-green-50 border border-primary/20 rounded-xl">
-              <p className="text-sm text-primary font-medium">
-                ✨ Welcome to our community! These featured stories showcase the rich culture and landscapes of Moçambique. 
-                Share your own story to connect with others.
+            <div className="mt-8 p-6 bg-gradient-to-r from-primary/10 to-secondary/10 border-2 border-primary/30 rounded-2xl">
+              <p className="text-lg text-primary font-medium leading-relaxed">
+                ✨ Bem-vindo à nossa comunidade! Estas histórias mostram a rica cultura e paisagens de Moçambique. 
+                Partilhe a sua própria história para se conectar com outros.
               </p>
             </div>
           )}
         </div>
 
-        {/* Instagram-style feed */}
-        <div className="space-y-8">
+        {/* Simplified story feed */}
+        <div className="space-y-12">
           {showSampleStories ? (
             sampleStories.map((story) => (
               <div key={story.id} className="animate-fade-in">
-                <InstagramStoryCard
+                <SimplifiedStoryCard
                   story={story}
                   isLiked={likedStories.has(story.id)}
                   onLike={() => handleLike(story.id)}
@@ -181,16 +186,16 @@ const Feed = () => {
             ))
           ) : (
             displayStories
-              .filter(story => story.image_url) // Only show stories with images
+              .filter(story => story.image_url)
               .map((story) => (
                 <div key={story.id} className="animate-fade-in">
-                  <InstagramStoryCard
+                  <SimplifiedStoryCard
                     story={{
                       id: parseInt(story.id),
                       title: story.title,
-                      community: story.communities?.name || story.location || 'Unknown',
+                      community: story.communities?.name || story.location || 'Comunidade',
                       province: story.province || '',
-                      author: story.profiles?.full_name || 'Anonymous',
+                      author: story.profiles?.full_name || 'Anónimo',
                       description: story.description,
                       image: story.image_url || '/placeholder.svg',
                       category: story.category,
@@ -211,67 +216,53 @@ const Feed = () => {
   );
 };
 
-// Instagram-style story card component
-const InstagramStoryCard = ({ story, isLiked, onLike, onConnect, onViewOnMap }: {
+// Simplified story card component for rural users with limited digital literacy
+const SimplifiedStoryCard = ({ story, isLiked, onLike, onConnect, onViewOnMap }: {
   story: any;
   isLiked: boolean;
   onLike: () => void;
   onConnect: () => void;
   onViewOnMap: () => void;
 }) => {
-  const getCategoryColor = (category: string) => {
-    const colors = {
-      traditions: "bg-orange-100 text-orange-700 border-orange-200",
-      crafts: "bg-purple-100 text-purple-700 border-purple-200",
-      music: "bg-blue-100 text-blue-700 border-blue-200",
-      agriculture: "bg-green-100 text-green-700 border-green-200",
-      celebrations: "bg-pink-100 text-pink-700 border-pink-200",
-      traditional_dances: "bg-red-100 text-red-700 border-red-200",
-      elder_wisdom: "bg-amber-100 text-amber-700 border-amber-200",
-      traditional_clothes: "bg-violet-100 text-violet-700 border-violet-200"
-    };
-    return colors[category as keyof typeof colors] || "bg-gray-100 text-gray-700 border-gray-200";
-  };
-
   const getCategoryLabel = (category: string) => {
     const labels = {
-      traditions: "Traditions",
-      crafts: "Crafts", 
-      music: "Music",
-      agriculture: "Agriculture",
-      celebrations: "Celebrations",
-      traditional_dances: "Traditional Dances",
-      elder_wisdom: "Elder Wisdom",
-      traditional_clothes: "Traditional Clothes"
+      traditions: "Tradições",
+      crafts: "Artesanato", 
+      music: "Música",
+      agriculture: "Agricultura",
+      celebrations: "Celebrações",
+      traditional_dances: "Danças Tradicionais",
+      elder_wisdom: "Sabedoria dos Anciãos",
+      traditional_clothes: "Roupas Tradicionais"
     };
     return labels[category as keyof typeof labels] || category;
   };
 
   return (
-    <div className="bg-card rounded-2xl shadow-lg overflow-hidden border border-border hover:shadow-xl transition-all duration-300">
-      {/* Header with author info */}
-      <div className="p-4 border-b border-border">
+    <div className="bg-card rounded-3xl shadow-xl overflow-hidden border-2 border-border hover:shadow-2xl transition-all duration-300">
+      {/* Simplified header with larger text */}
+      <div className="p-6 border-b-2 border-border">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
-              <span className="text-white font-semibold text-sm">
+          <div className="flex items-center space-x-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+              <span className="text-white font-bold text-xl">
                 {story.author?.charAt(0) || 'A'}
               </span>
             </div>
             <div>
-              <p className="font-semibold text-foreground">{story.author}</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="font-bold text-xl text-foreground">{story.author}</p>
+              <p className="text-lg text-muted-foreground">
                 {story.community}{story.province && `, ${story.province}`}
               </p>
             </div>
           </div>
-          <div className={`px-3 py-1 rounded-full text-xs font-medium border ${getCategoryColor(story.category)}`}>
+          <div className="px-4 py-2 rounded-full text-sm font-bold border-2 bg-primary/10 text-primary border-primary/30">
             {getCategoryLabel(story.category)}
           </div>
         </div>
       </div>
 
-      {/* Image */}
+      {/* Large image for better visibility */}
       <div className="relative aspect-square">
         <img
           src={story.image}
@@ -280,43 +271,47 @@ const InstagramStoryCard = ({ story, isLiked, onLike, onConnect, onViewOnMap }: 
         />
       </div>
 
-      {/* Content */}
-      <div className="p-4">
-        <h3 className="text-xl font-bold mb-2 text-foreground">{story.title}</h3>
-        <p className="text-muted-foreground leading-relaxed mb-4">
+      {/* Content with larger text */}
+      <div className="p-6">
+        <h3 className="text-2xl font-bold mb-4 text-foreground leading-tight">{story.title}</h3>
+        <p className="text-muted-foreground text-lg leading-relaxed mb-6">
           {story.description}
         </p>
         
-        <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-          <span>{new Date(story.date).toLocaleDateString('pt-PT')}</span>
+        <div className="flex items-center justify-between text-base text-muted-foreground mb-6">
+          <span className="font-medium">{new Date(story.date).toLocaleDateString('pt-PT')}</span>
         </div>
 
-        {/* Action buttons */}
-        <div className="flex space-x-2">
+        {/* Large, simplified action buttons */}
+        <div className="space-y-4">
           <button
             onClick={onLike}
-            className={`flex-1 flex items-center justify-center gap-2 font-medium py-2 px-4 rounded-xl transition-all duration-200 ${
+            className={`w-full flex items-center justify-center gap-3 font-bold py-4 px-6 rounded-2xl text-lg transition-all duration-200 ${
               isLiked 
-                ? 'bg-primary text-primary-foreground shadow-md' 
-                : 'bg-primary/10 hover:bg-primary/20 text-primary'
+                ? 'bg-primary text-primary-foreground shadow-lg transform scale-105' 
+                : 'bg-primary/20 hover:bg-primary/30 text-primary border-2 border-primary/50'
             }`}
           >
-            <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
-            {isLiked ? 'Supported' : 'Support'}
+            <Heart className={`w-6 h-6 ${isLiked ? 'fill-current' : ''}`} />
+            {isLiked ? 'Apoiado ❤️' : 'Apoiar'}
           </button>
-          <button
-            onClick={onConnect}
-            className="flex-1 flex items-center justify-center gap-2 bg-secondary/10 hover:bg-secondary/20 text-secondary-foreground font-medium py-2 px-4 rounded-xl transition-colors"
-          >
-            <Users className="w-4 h-4" />
-            Connect
-          </button>
-          <button
-            onClick={onViewOnMap}
-            className="bg-accent/10 hover:bg-accent/20 text-accent-foreground font-medium py-2 px-4 rounded-xl transition-colors flex items-center justify-center"
-          >
-            <MapPin className="w-4 h-4" />
-          </button>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <button
+              onClick={onConnect}
+              className="flex items-center justify-center gap-2 bg-secondary/20 hover:bg-secondary/30 text-secondary-foreground font-bold py-3 px-4 rounded-2xl transition-colors text-lg border-2 border-secondary/50"
+            >
+              <Users className="w-5 h-5" />
+              Conectar
+            </button>
+            <button
+              onClick={onViewOnMap}
+              className="bg-accent/20 hover:bg-accent/30 text-accent-foreground font-bold py-3 px-4 rounded-2xl transition-colors flex items-center justify-center text-lg border-2 border-accent/50"
+            >
+              <MapPin className="w-5 h-5" />
+              Localização
+            </button>
+          </div>
         </div>
       </div>
     </div>
