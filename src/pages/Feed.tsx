@@ -2,12 +2,16 @@
 import { useStories } from '@/hooks/useStories';
 import CommunityStoryCard from '@/components/CommunityStoryCard';
 import Header from '@/components/Header';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Heart, Users, MapPin } from 'lucide-react';
+import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 const Feed = () => {
   const { data: stories, isLoading, error } = useStories();
+  const { toast } = useToast();
+  const [likedStories, setLikedStories] = useState<Set<number>>(new Set());
 
-  // Instagram-style sample stories with the newly uploaded images
+  // Updated sample stories - removed ones without pictures and beach pictures
   const sampleStories = [
     {
       id: 1,
@@ -47,18 +51,6 @@ const Feed = () => {
     },
     {
       id: 4,
-      title: "Salt Harvesting Traditions", 
-      community: "Beira",
-      province: "Sofala",
-      author: "Manuel Macuácua",
-      description: "Salt harvesting along our coastal regions is both an art and a livelihood. Communities work together during the dry season, creating intricate patterns of salt beds. This traditional practice sustains families and preserves knowledge about coastal resource management.",
-      image: "/lovable-uploads/c405e64a-3135-4aee-829d-2cc9ec5d6ed1.png",
-      category: "agriculture",
-      date: "2024-01-08",
-      coordinates: [-19.8433, 34.8389] as [number, number],
-    },
-    {
-      id: 5,
       title: "Farming with Pride",
       community: "Nampula",
       province: "Nampula", 
@@ -70,7 +62,7 @@ const Feed = () => {
       coordinates: [-15.1165, 39.2666] as [number, number],
     },
     {
-      id: 6,
+      id: 5,
       title: "Community Unity and Culture",
       community: "Cabo Delgado",
       province: "Cabo Delgado",
@@ -82,6 +74,43 @@ const Feed = () => {
       coordinates: [-11.2681, 40.5117] as [number, number],
     },
   ];
+
+  const handleLike = (storyId: number) => {
+    const newLikedStories = new Set(likedStories);
+    if (likedStories.has(storyId)) {
+      newLikedStories.delete(storyId);
+      toast({
+        title: "Support removed",
+        description: "You removed your support for this story.",
+      });
+    } else {
+      newLikedStories.add(storyId);
+      toast({
+        title: "Story supported! ❤️",
+        description: "Thank you for supporting this community story.",
+      });
+    }
+    setLikedStories(newLikedStories);
+  };
+
+  const handleConnect = (storyId: number) => {
+    toast({
+      title: "Connection request sent! 🤝",
+      description: "Your connection request has been sent to the storyteller.",
+    });
+  };
+
+  const handleViewOnMap = (storyId: number) => {
+    const story = sampleStories.find(s => s.id === storyId);
+    if (story) {
+      toast({
+        title: "Opening map view 📍",
+        description: `Showing ${story.title} location on the map.`,
+      });
+      // Here you could navigate to the map page with the story location
+      // For now, just show a toast
+    }
+  };
 
   if (isLoading) {
     return (
@@ -143,34 +172,38 @@ const Feed = () => {
               <div key={story.id} className="animate-fade-in">
                 <InstagramStoryCard
                   story={story}
-                  onLike={() => console.log('Liked story:', story.id)}
-                  onConnect={() => console.log('Connect to:', story.id)}
-                  onViewOnMap={() => console.log('View on map:', story.id)}
+                  isLiked={likedStories.has(story.id)}
+                  onLike={() => handleLike(story.id)}
+                  onConnect={() => handleConnect(story.id)}
+                  onViewOnMap={() => handleViewOnMap(story.id)}
                 />
               </div>
             ))
           ) : (
-            displayStories.map((story) => (
-              <div key={story.id} className="animate-fade-in">
-                <InstagramStoryCard
-                  story={{
-                    id: parseInt(story.id),
-                    title: story.title,
-                    community: story.communities?.name || story.location || 'Unknown',
-                    province: story.province || '',
-                    author: story.profiles?.full_name || 'Anonymous',
-                    description: story.description,
-                    image: story.image_url || '/placeholder.svg',
-                    category: story.category,
-                    date: story.created_at,
-                    coordinates: [0, 0] as [number, number],
-                  }}
-                  onLike={() => console.log('Liked story:', story.id)}
-                  onConnect={() => console.log('Connect to:', story.id)}
-                  onViewOnMap={() => console.log('View on map:', story.id)}
-                />
-              </div>
-            ))
+            displayStories
+              .filter(story => story.image_url) // Only show stories with images
+              .map((story) => (
+                <div key={story.id} className="animate-fade-in">
+                  <InstagramStoryCard
+                    story={{
+                      id: parseInt(story.id),
+                      title: story.title,
+                      community: story.communities?.name || story.location || 'Unknown',
+                      province: story.province || '',
+                      author: story.profiles?.full_name || 'Anonymous',
+                      description: story.description,
+                      image: story.image_url || '/placeholder.svg',
+                      category: story.category,
+                      date: story.created_at,
+                      coordinates: [0, 0] as [number, number],
+                    }}
+                    isLiked={likedStories.has(parseInt(story.id))}
+                    onLike={() => handleLike(parseInt(story.id))}
+                    onConnect={() => handleConnect(parseInt(story.id))}
+                    onViewOnMap={() => handleViewOnMap(parseInt(story.id))}
+                  />
+                </div>
+              ))
           )}
         </div>
       </div>
@@ -179,8 +212,9 @@ const Feed = () => {
 };
 
 // Instagram-style story card component
-const InstagramStoryCard = ({ story, onLike, onConnect, onViewOnMap }: {
+const InstagramStoryCard = ({ story, isLiked, onLike, onConnect, onViewOnMap }: {
   story: any;
+  isLiked: boolean;
   onLike: () => void;
   onConnect: () => void;
   onViewOnMap: () => void;
@@ -261,21 +295,27 @@ const InstagramStoryCard = ({ story, onLike, onConnect, onViewOnMap }: {
         <div className="flex space-x-2">
           <button
             onClick={onLike}
-            className="flex-1 bg-primary/10 hover:bg-primary/20 text-primary font-medium py-2 px-4 rounded-xl transition-colors"
+            className={`flex-1 flex items-center justify-center gap-2 font-medium py-2 px-4 rounded-xl transition-all duration-200 ${
+              isLiked 
+                ? 'bg-primary text-primary-foreground shadow-md' 
+                : 'bg-primary/10 hover:bg-primary/20 text-primary'
+            }`}
           >
-            ❤️ Support
+            <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
+            {isLiked ? 'Supported' : 'Support'}
           </button>
           <button
             onClick={onConnect}
-            className="flex-1 bg-secondary/10 hover:bg-secondary/20 text-secondary-foreground font-medium py-2 px-4 rounded-xl transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 bg-secondary/10 hover:bg-secondary/20 text-secondary-foreground font-medium py-2 px-4 rounded-xl transition-colors"
           >
-            🤝 Connect
+            <Users className="w-4 h-4" />
+            Connect
           </button>
           <button
             onClick={onViewOnMap}
-            className="bg-accent/10 hover:bg-accent/20 text-accent-foreground font-medium py-2 px-4 rounded-xl transition-colors"
+            className="bg-accent/10 hover:bg-accent/20 text-accent-foreground font-medium py-2 px-4 rounded-xl transition-colors flex items-center justify-center"
           >
-            📍
+            <MapPin className="w-4 h-4" />
           </button>
         </div>
       </div>
