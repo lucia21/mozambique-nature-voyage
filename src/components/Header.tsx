@@ -13,25 +13,28 @@ import { User, LogOut, Settings, Menu } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/contexts/LanguageContext';
+import LanguageSelector from '@/components/LanguageSelector';
 
 const Header = () => {
   const { user, signOut } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleSignOut = async () => {
     try {
       await signOut();
       toast({
-        title: "Sessão terminada",
-        description: "A sua sessão foi terminada com sucesso."
+        title: t('auth.session_ended'),
+        description: t('auth.session_ended_desc')
       });
       navigate('/');
     } catch (error) {
       toast({
-        title: "Erro",
-        description: "Falha ao terminar sessão.",
+        title: t('auth.error'),
+        description: t('auth.logout_error'),
         variant: "destructive"
       });
     }
@@ -46,32 +49,34 @@ const Header = () => {
         </Link>
         
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden md:flex items-center space-x-4">
+          <LanguageSelector />
+          
           {user ? (
             <>
               <Link 
                 to="/feed" 
                 className="text-lg font-semibold hover:text-primary transition-colors py-2 px-4 rounded-xl hover:bg-primary/10"
               >
-                Histórias
+                📚 {t('nav.stories')}
               </Link>
               <Link 
                 to="/share" 
                 className="text-lg font-semibold hover:text-primary transition-colors py-2 px-4 rounded-xl hover:bg-primary/10"
               >
-                Partilhar
+                ✍️ {t('nav.share')}
               </Link>
               <Link 
                 to="/communities" 
                 className="text-lg font-semibold hover:text-primary transition-colors py-2 px-4 rounded-xl hover:bg-primary/10"
               >
-                Comunidades
+                🏘️ {t('nav.communities')}
               </Link>
               <Link 
                 to="/map" 
                 className="text-lg font-semibold hover:text-primary transition-colors py-2 px-4 rounded-xl hover:bg-primary/10"
               >
-                Mapa
+                🗺️ {t('nav.map')}
               </Link>
               
               <DropdownMenu>
@@ -85,7 +90,7 @@ const Header = () => {
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-64" align="end" forceMount>
+                <DropdownMenuContent className="w-64 bg-background border-2 shadow-lg" align="end" forceMount>
                   <div className="flex items-center justify-start gap-3 p-3">
                     <div className="flex flex-col space-y-1 leading-none">
                       <p className="font-semibold text-lg">{user.email}</p>
@@ -94,16 +99,16 @@ const Header = () => {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className="py-3 text-lg">
                     <User className="mr-3 h-5 w-5" />
-                    Perfil
+                    {t('nav.profile')}
                   </DropdownMenuItem>
                   <DropdownMenuItem className="py-3 text-lg">
                     <Settings className="mr-3 h-5 w-5" />
-                    Definições
+                    {t('nav.settings')}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut} className="py-3 text-lg">
                     <LogOut className="mr-3 h-5 w-5" />
-                    Terminar Sessão
+                    {t('nav.logout')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -111,17 +116,18 @@ const Header = () => {
           ) : (
             <div className="flex items-center space-x-4">
               <Button variant="ghost" asChild className="text-lg py-3 px-6">
-                <Link to="/auth/login">Entrar</Link>
+                <Link to="/auth/login">{t('nav.login')}</Link>
               </Button>
               <Button asChild className="text-lg py-3 px-6">
-                <Link to="/auth/register">Começar</Link>
+                <Link to="/auth/register">{t('nav.register')}</Link>
               </Button>
             </div>
           )}
         </nav>
 
         {/* Mobile Navigation */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center space-x-2">
+          <LanguageSelector />
           {user ? (
             <Button
               variant="ghost"
@@ -134,10 +140,10 @@ const Header = () => {
           ) : (
             <div className="flex items-center space-x-2">
               <Button variant="ghost" asChild className="text-base py-2 px-4">
-                <Link to="/auth/login">Entrar</Link>
+                <Link to="/auth/login">{t('nav.login')}</Link>
               </Button>
               <Button asChild className="text-base py-2 px-4">
-                <Link to="/auth/register">Começar</Link>
+                <Link to="/auth/register">{t('nav.register')}</Link>
               </Button>
             </div>
           )}
@@ -153,35 +159,35 @@ const Header = () => {
               className="block text-lg font-semibold hover:text-primary transition-colors py-3 px-4 rounded-xl hover:bg-primary/10"
               onClick={() => setMobileMenuOpen(false)}
             >
-              📚 Histórias
+              📚 {t('nav.stories')}
             </Link>
             <Link 
               to="/share" 
               className="block text-lg font-semibold hover:text-primary transition-colors py-3 px-4 rounded-xl hover:bg-primary/10"
               onClick={() => setMobileMenuOpen(false)}
             >
-              ✍️ Partilhar
+              ✍️ {t('nav.share')}
             </Link>
             <Link 
               to="/communities" 
               className="block text-lg font-semibold hover:text-primary transition-colors py-3 px-4 rounded-xl hover:bg-primary/10"
               onClick={() => setMobileMenuOpen(false)}
             >
-              🏘️ Comunidades
+              🏘️ {t('nav.communities')}
             </Link>
             <Link 
               to="/map" 
               className="block text-lg font-semibold hover:text-primary transition-colors py-3 px-4 rounded-xl hover:bg-primary/10"
               onClick={() => setMobileMenuOpen(false)}
             >
-              🗺️ Mapa
+              🗺️ {t('nav.map')}
             </Link>
             <div className="border-t-2 pt-2 mt-2">
               <button
                 onClick={handleSignOut}
                 className="block w-full text-left text-lg font-semibold hover:text-destructive transition-colors py-3 px-4 rounded-xl hover:bg-destructive/10"
               >
-                🚪 Terminar Sessão
+                🚪 {t('nav.logout')}
               </button>
             </div>
           </nav>

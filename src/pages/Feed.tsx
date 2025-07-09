@@ -1,14 +1,15 @@
 
 import { useStories } from '@/hooks/useStories';
-import CommunityStoryCard from '@/components/CommunityStoryCard';
 import Header from '@/components/Header';
-import { Loader2, Heart, Users, MapPin } from 'lucide-react';
+import { Loader2, Heart, Users, MapPin, Volume2 } from 'lucide-react';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Feed = () => {
   const { data: stories, isLoading, error } = useStories();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [likedStories, setLikedStories] = useState<Set<number>>(new Set());
 
   // Updated sample stories for Mozambican rural communities
@@ -80,14 +81,14 @@ const Feed = () => {
     if (likedStories.has(storyId)) {
       newLikedStories.delete(storyId);
       toast({
-        title: "✅ Apoio removido",
-        description: "Removeu o seu apoio desta história.",
+        title: t('story.removed_toast'),
+        description: t('story.removed_desc'),
       });
     } else {
       newLikedStories.add(storyId);
       toast({
-        title: "❤️ História apoiada!",
-        description: "Obrigado por apoiar esta história da comunidade.",
+        title: t('story.supported_toast'),
+        description: t('story.supported_desc'),
       });
     }
     setLikedStories(newLikedStories);
@@ -95,8 +96,8 @@ const Feed = () => {
 
   const handleConnect = (storyId: number) => {
     toast({
-      title: "🤝 Pedido enviado!",
-      description: "O seu pedido de conexão foi enviado ao contador da história.",
+      title: t('story.connect_toast'),
+      description: t('story.connect_desc'),
     });
   };
 
@@ -104,9 +105,20 @@ const Feed = () => {
     const story = sampleStories.find(s => s.id === storyId);
     if (story) {
       toast({
-        title: "📍 Ver no mapa",
-        description: `A mostrar localização de ${story.title} no mapa.`,
+        title: t('story.map_toast'),
+        description: t('story.map_desc', { title: story.title }),
       });
+    }
+  };
+
+  // Text-to-speech function for accessibility
+  const handleTextToSpeech = (text: string) => {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'pt-MZ'; // Mozambican Portuguese
+      utterance.rate = 0.8; // Slower speech for better comprehension
+      utterance.volume = 0.8;
+      speechSynthesis.speak(utterance);
     }
   };
 
@@ -117,7 +129,7 @@ const Feed = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-center min-h-[400px]">
             <Loader2 className="h-16 w-16 animate-spin text-primary" />
-            <span className="ml-4 text-xl">A carregar histórias...</span>
+            <span className="ml-4 text-xl">{t('feed.loading')}</span>
           </div>
         </div>
       </div>
@@ -130,13 +142,13 @@ const Feed = () => {
         <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="text-center py-12">
-            <h2 className="text-4xl font-bold text-destructive mb-6">Não foi possível carregar as histórias</h2>
-            <p className="text-muted-foreground text-xl mb-8">Por favor, toque para tentar novamente.</p>
+            <h2 className="text-4xl font-bold text-destructive mb-6">{t('feed.error')}</h2>
+            <p className="text-muted-foreground text-xl mb-8">{t('feed.retry')}</p>
             <button 
               onClick={() => window.location.reload()} 
-              className="bg-primary text-primary-foreground px-8 py-4 rounded-xl text-lg font-semibold"
+              className="bg-primary text-primary-foreground px-8 py-4 rounded-xl text-lg font-semibold touch-target-large"
             >
-              Tentar Novamente
+              {t('feed.try_again')}
             </button>
           </div>
         </div>
@@ -154,18 +166,35 @@ const Feed = () => {
       <div className="container mx-auto px-4 py-6 max-w-2xl">
         {/* Simplified header for rural users */}
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold mb-4 text-primary">
-            Histórias da Nossa Comunidade
-          </h1>
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <h1 className="text-4xl font-bold text-primary">
+              {t('feed.title')}
+            </h1>
+            <button
+              onClick={() => handleTextToSpeech(t('feed.title') + '. ' + t('feed.subtitle'))}
+              className="p-3 bg-secondary/20 hover:bg-secondary/30 rounded-full transition-colors touch-target-large"
+              title="Ouvir título"
+            >
+              <Volume2 className="h-6 w-6 text-secondary" />
+            </button>
+          </div>
           <p className="text-muted-foreground text-xl leading-relaxed">
-            Descubra a beleza e cultura de Moçambique
+            {t('feed.subtitle')}
           </p>
           {showSampleStories && (
             <div className="mt-8 p-6 bg-gradient-to-r from-primary/10 to-secondary/10 border-2 border-primary/30 rounded-2xl">
-              <p className="text-lg text-primary font-medium leading-relaxed">
-                ✨ Bem-vindo à nossa comunidade! Estas histórias mostram a rica cultura e paisagens de Moçambique. 
-                Partilhe a sua própria história para se conectar com outros.
-              </p>
+              <div className="flex items-start gap-4">
+                <p className="text-lg text-primary font-medium leading-relaxed flex-1">
+                  {t('feed.welcome')}
+                </p>
+                <button
+                  onClick={() => handleTextToSpeech(t('feed.welcome'))}
+                  className="p-2 bg-primary/20 hover:bg-primary/30 rounded-full transition-colors touch-target-large flex-shrink-0"
+                  title="Ouvir mensagem de boas-vindas"
+                >
+                  <Volume2 className="h-5 w-5 text-primary" />
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -181,6 +210,7 @@ const Feed = () => {
                   onLike={() => handleLike(story.id)}
                   onConnect={() => handleConnect(story.id)}
                   onViewOnMap={() => handleViewOnMap(story.id)}
+                  onTextToSpeech={handleTextToSpeech}
                 />
               </div>
             ))
@@ -193,9 +223,9 @@ const Feed = () => {
                     story={{
                       id: parseInt(story.id),
                       title: story.title,
-                      community: story.communities?.name || story.location || 'Comunidade',
+                      community: story.communities?.name || story.location || t('common.community'),
                       province: story.province || '',
-                      author: story.profiles?.full_name || 'Anónimo',
+                      author: story.profiles?.full_name || t('common.anonymous'),
                       description: story.description,
                       image: story.image_url || '/placeholder.svg',
                       category: story.category,
@@ -206,6 +236,7 @@ const Feed = () => {
                     onLike={() => handleLike(parseInt(story.id))}
                     onConnect={() => handleConnect(parseInt(story.id))}
                     onViewOnMap={() => handleViewOnMap(parseInt(story.id))}
+                    onTextToSpeech={handleTextToSpeech}
                   />
                 </div>
               ))
@@ -217,26 +248,21 @@ const Feed = () => {
 };
 
 // Simplified story card component for rural users with limited digital literacy
-const SimplifiedStoryCard = ({ story, isLiked, onLike, onConnect, onViewOnMap }: {
+const SimplifiedStoryCard = ({ story, isLiked, onLike, onConnect, onViewOnMap, onTextToSpeech }: {
   story: any;
   isLiked: boolean;
   onLike: () => void;
   onConnect: () => void;
   onViewOnMap: () => void;
+  onTextToSpeech: (text: string) => void;
 }) => {
+  const { t } = useLanguage();
+
   const getCategoryLabel = (category: string) => {
-    const labels = {
-      traditions: "Tradições",
-      crafts: "Artesanato", 
-      music: "Música",
-      agriculture: "Agricultura",
-      celebrations: "Celebrações",
-      traditional_dances: "Danças Tradicionais",
-      elder_wisdom: "Sabedoria dos Anciãos",
-      traditional_clothes: "Roupas Tradicionais"
-    };
-    return labels[category as keyof typeof labels] || category;
+    return t(`category.${category}`) || category;
   };
+
+  const storyText = `${story.title}. ${story.description}. Por ${story.author}, de ${story.community}`;
 
   return (
     <div className="bg-card rounded-3xl shadow-xl overflow-hidden border-2 border-border hover:shadow-2xl transition-all duration-300">
@@ -249,15 +275,24 @@ const SimplifiedStoryCard = ({ story, isLiked, onLike, onConnect, onViewOnMap }:
                 {story.author?.charAt(0) || 'A'}
               </span>
             </div>
-            <div>
+            <div className="flex-1">
               <p className="font-bold text-xl text-foreground">{story.author}</p>
               <p className="text-lg text-muted-foreground">
                 {story.community}{story.province && `, ${story.province}`}
               </p>
             </div>
           </div>
-          <div className="px-4 py-2 rounded-full text-sm font-bold border-2 bg-primary/10 text-primary border-primary/30">
-            {getCategoryLabel(story.category)}
+          <div className="flex items-center gap-2">
+            <div className="px-4 py-2 rounded-full text-sm font-bold border-2 bg-primary/10 text-primary border-primary/30">
+              {getCategoryLabel(story.category)}
+            </div>
+            <button
+              onClick={() => onTextToSpeech(storyText)}
+              className="p-3 bg-accent/20 hover:bg-accent/30 rounded-full transition-colors touch-target-large"
+              title="Ouvir história"
+            >
+              <Volume2 className="h-5 w-5 text-accent" />
+            </button>
           </div>
         </div>
       </div>
@@ -286,30 +321,30 @@ const SimplifiedStoryCard = ({ story, isLiked, onLike, onConnect, onViewOnMap }:
         <div className="space-y-4">
           <button
             onClick={onLike}
-            className={`w-full flex items-center justify-center gap-3 font-bold py-4 px-6 rounded-2xl text-lg transition-all duration-200 ${
+            className={`w-full flex items-center justify-center gap-3 font-bold py-4 px-6 rounded-2xl text-lg transition-all duration-200 touch-target-large ${
               isLiked 
                 ? 'bg-primary text-primary-foreground shadow-lg transform scale-105' 
                 : 'bg-primary/20 hover:bg-primary/30 text-primary border-2 border-primary/50'
             }`}
           >
             <Heart className={`w-6 h-6 ${isLiked ? 'fill-current' : ''}`} />
-            {isLiked ? 'Apoiado ❤️' : 'Apoiar'}
+            {isLiked ? t('story.supported') : t('story.support')}
           </button>
           
           <div className="grid grid-cols-2 gap-4">
             <button
               onClick={onConnect}
-              className="flex items-center justify-center gap-2 bg-secondary/20 hover:bg-secondary/30 text-secondary-foreground font-bold py-3 px-4 rounded-2xl transition-colors text-lg border-2 border-secondary/50"
+              className="flex items-center justify-center gap-2 bg-secondary/20 hover:bg-secondary/30 text-secondary-foreground font-bold py-3 px-4 rounded-2xl transition-colors text-lg border-2 border-secondary/50 touch-target-large"
             >
               <Users className="w-5 h-5" />
-              Conectar
+              {t('story.connect')}
             </button>
             <button
               onClick={onViewOnMap}
-              className="bg-accent/20 hover:bg-accent/30 text-accent-foreground font-bold py-3 px-4 rounded-2xl transition-colors flex items-center justify-center text-lg border-2 border-accent/50"
+              className="bg-accent/20 hover:bg-accent/30 text-accent-foreground font-bold py-3 px-4 rounded-2xl transition-colors flex items-center justify-center text-lg border-2 border-accent/50 touch-target-large"
             >
               <MapPin className="w-5 h-5" />
-              Localização
+              {t('story.location')}
             </button>
           </div>
         </div>
