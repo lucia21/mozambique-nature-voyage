@@ -1,17 +1,85 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export type Language = 'pt' | 'makhuwa' | 'sena' | 'changana';
+export type Language = 'en' | 'pt' | 'makhuwa' | 'sena' | 'changana';
 
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string>) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 const translations = {
+  en: {
+    // Navigation
+    'nav.stories': 'Stories',
+    'nav.share': 'Share',
+    'nav.communities': 'Communities',
+    'nav.map': 'Map',
+    'nav.profile': 'Profile',
+    'nav.settings': 'Settings',
+    'nav.logout': 'Logout',
+    'nav.login': 'Login',
+    'nav.register': 'Get Started',
+    
+    // Feed page
+    'feed.title': 'Our Community Stories',
+    'feed.subtitle': 'Discover the beauty and culture of Mozambique',
+    'feed.welcome': '✨ Welcome to our community! These stories showcase the rich culture and landscapes of Mozambique. Share your own story to connect with others.',
+    'feed.loading': 'Loading stories...',
+    'feed.error': 'Could not load stories',
+    'feed.retry': 'Please tap to try again.',
+    'feed.try_again': 'Try Again',
+    
+    // Story actions
+    'story.support': 'Support',
+    'story.supported': 'Supported ❤️',
+    'story.connect': 'Connect',
+    'story.location': 'Location',
+    'story.supported_toast': '❤️ Story supported!',
+    'story.supported_desc': 'Thank you for supporting this community story.',
+    'story.removed_toast': '✅ Support removed',
+    'story.removed_desc': 'You removed your support from this story.',
+    'story.connect_toast': '🤝 Request sent!',
+    'story.connect_desc': 'Your connection request was sent to the storyteller.',
+    'story.map_toast': '📍 View on map',
+    'story.map_desc': 'Showing location of {title} on the map.',
+    'story.by_author': 'By {author}',
+    'story.from_community': 'from {community}',
+    
+    // Audio controls
+    'audio.muted': '🔇 Audio muted',
+    'audio.muted_desc': 'Audio playback is now disabled.',
+    'audio.unmuted': '🔊 Audio enabled',
+    'audio.unmuted_desc': 'Audio playback is now enabled.',
+    'audio.mute': 'Mute audio',
+    'audio.unmute': 'Enable audio',
+    'audio.listen_title': 'Listen to title',
+    'audio.listen_welcome': 'Listen to welcome message',
+    'audio.listen_story': 'Listen to story',
+    
+    // Categories
+    'category.traditions': 'Traditions',
+    'category.crafts': 'Crafts',
+    'category.music': 'Music',
+    'category.agriculture': 'Agriculture',
+    'category.celebrations': 'Celebrations',
+    'category.traditional_dances': 'Traditional Dances',
+    'category.elder_wisdom': 'Elder Wisdom',
+    'category.traditional_clothes': 'Traditional Clothes',
+    
+    // Auth
+    'auth.session_ended': 'Session ended',
+    'auth.session_ended_desc': 'Your session was successfully ended.',
+    'auth.error': 'Error',
+    'auth.logout_error': 'Failed to logout.',
+    
+    // Common
+    'common.anonymous': 'Anonymous',
+    'common.community': 'Community',
+  },
   pt: {
     // Navigation
     'nav.stories': 'Histórias',
@@ -46,6 +114,19 @@ const translations = {
     'story.connect_desc': 'O seu pedido de conexão foi enviado ao contador da história.',
     'story.map_toast': '📍 Ver no mapa',
     'story.map_desc': 'A mostrar localização de {title} no mapa.',
+    'story.by_author': 'Por {author}',
+    'story.from_community': 'de {community}',
+    
+    // Audio controls
+    'audio.muted': '🔇 Áudio silenciado',
+    'audio.muted_desc': 'A reprodução de áudio está agora desativada.',
+    'audio.unmuted': '🔊 Áudio ativado',
+    'audio.unmuted_desc': 'A reprodução de áudio está agora ativada.',
+    'audio.mute': 'Silenciar áudio',
+    'audio.unmute': 'Ativar áudio',
+    'audio.listen_title': 'Ouvir título',
+    'audio.listen_welcome': 'Ouvir mensagem de boas-vindas',
+    'audio.listen_story': 'Ouvir história',
     
     // Categories
     'category.traditions': 'Tradições',
@@ -101,6 +182,19 @@ const translations = {
     'story.connect_desc': 'Omapo winu watumiwa kwa mwene ikaya.',
     'story.map_toast': '📍 Mwehe mapani',
     'story.map_desc': 'Anawoneha mahali pa {title} mapani.',
+    'story.by_author': 'Wa {author}',
+    'story.from_community': 'wa {community}',
+    
+    // Audio controls
+    'audio.muted': '🔇 Sauti yethewe',
+    'audio.muted_desc': 'Sauti khaayipulikiwi.',
+    'audio.unmuted': '🔊 Sauti yawesiwe',
+    'audio.unmuted_desc': 'Sauti yaasurulliwa.',
+    'audio.mute': 'Yetha sauti',
+    'audio.unmute': 'Wesa sauti',
+    'audio.listen_title': 'Phulikiza mutwe',
+    'audio.listen_welcome': 'Phulikiza ukaribisho',
+    'audio.listen_story': 'Phulikiza ikaya',
     
     // Categories
     'category.traditions': 'Ntamaduni',
@@ -156,6 +250,19 @@ const translations = {
     'story.connect_desc': 'Pempho lanu latumizidwa kwa wokamba nkhani.',
     'story.map_toast': '📍 Onani pa mapu',
     'story.map_desc': 'Tikuonetsa malo a {title} pa mapu.',
+    'story.by_author': 'Ndi {author}',
+    'story.from_community': 'wochokera ku {community}',
+    
+    // Audio controls
+    'audio.muted': '🔇 Liwu lazimitsidwa',
+    'audio.muted_desc': 'Liwu silimveka.',
+    'audio.unmuted': '🔊 Liwu layatsidwa',
+    'audio.unmuted_desc': 'Liwu likumveka.',
+    'audio.mute': 'Zimitsani liwu',
+    'audio.unmute': 'Yatsani liwu',
+    'audio.listen_title': 'Mverani mutu',
+    'audio.listen_welcome': 'Mverani moni',
+    'audio.listen_story': 'Mverani nkhani',
     
     // Categories
     'category.traditions': 'Miyambo',
@@ -211,6 +318,19 @@ const translations = {
     'story.connect_desc': 'Kombelo ra wena ri rhumeriwe eka muxaxi wa ntsheketo.',
     'story.map_toast': '📍 Vona eka mapa',
     'story.map_desc': 'Hi kombisa ndhawu ya {title} eka mapa.',
+    'story.by_author': 'Hi {author}',
+    'story.from_community': 'wa {community}',
+    
+    // Audio controls
+    'audio.muted': '🔇 Rito ri rhuriwile',
+    'audio.muted_desc': 'Rito a ri tirhisi.',
+    'audio.unmuted': '🔊 Rito ri tirhisiwe',
+    'audio.unmuted_desc': 'Rito ri tirhisa.',
+    'audio.mute': 'Rhurisa rito',
+    'audio.unmute': 'Tirhaisa rito',
+    'audio.listen_title': 'Yingisela nhlokomhaka',
+    'audio.listen_welcome': 'Yingisela rivongolose',
+    'audio.listen_story': 'Yingisela ntsheketo',
     
     // Categories
     'category.traditions': 'Mindhavuko',
@@ -239,7 +359,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
     const savedLanguage = localStorage.getItem('preferred-language') as Language;
-    if (savedLanguage && ['pt', 'makhuwa', 'sena', 'changana'].includes(savedLanguage)) {
+    if (savedLanguage && ['en', 'pt', 'makhuwa', 'sena', 'changana'].includes(savedLanguage)) {
       setLanguage(savedLanguage);
     }
   }, []);
@@ -250,7 +370,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const t = (key: string, params?: Record<string, string>) => {
-    let translation = translations[language][key] || translations.pt[key] || key;
+    let translation = translations[language][key] || translations.pt[key] || translations.en[key] || key;
     
     if (params) {
       Object.keys(params).forEach(param => {
