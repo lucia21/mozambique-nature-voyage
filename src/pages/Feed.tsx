@@ -1,7 +1,7 @@
 
 import { useStories } from '@/hooks/useStories';
 import Header from '@/components/Header';
-import { Loader2, Heart, Users, MapPin, Volume2, VolumeX } from 'lucide-react';
+import { Loader2, Heart, Users } from 'lucide-react';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -11,7 +11,6 @@ const Feed = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
   const [likedStories, setLikedStories] = useState<Set<number>>(new Set());
-  const [isMuted, setIsMuted] = useState(false);
 
   // Updated sample stories for Mozambican rural communities
   const sampleStories = [
@@ -102,38 +101,6 @@ const Feed = () => {
     });
   };
 
-  const handleViewOnMap = (storyId: number) => {
-    const story = sampleStories.find(s => s.id === storyId);
-    if (story) {
-      toast({
-        title: t('story.map_toast'),
-        description: t('story.map_desc', { title: story.title }),
-      });
-    }
-  };
-
-  // Text-to-speech function for accessibility
-  const handleTextToSpeech = (text: string) => {
-    if (isMuted || !('speechSynthesis' in window)) return;
-    
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'pt-MZ'; // Mozambican Portuguese
-    utterance.rate = 0.8; // Slower speech for better comprehension
-    utterance.volume = 0.8;
-    speechSynthesis.speak(utterance);
-  };
-
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
-    if (!isMuted) {
-      speechSynthesis.cancel(); // Stop any ongoing speech
-    }
-    toast({
-      title: isMuted ? t('audio.unmuted') : t('audio.muted'),
-      description: isMuted ? t('audio.unmuted_desc') : t('audio.muted_desc'),
-    });
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
@@ -182,31 +149,6 @@ const Feed = () => {
             <h1 className="text-4xl font-bold text-primary">
               {t('feed.title')}
             </h1>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => handleTextToSpeech(t('feed.title') + '. ' + t('feed.subtitle'))}
-                disabled={isMuted}
-                className={`p-3 rounded-full transition-colors touch-target-large ${
-                  isMuted 
-                    ? 'bg-muted/20 text-muted-foreground cursor-not-allowed' 
-                    : 'bg-secondary/20 hover:bg-secondary/30 text-secondary'
-                }`}
-                title={t('audio.listen_title')}
-              >
-                <Volume2 className="h-6 w-6" />
-              </button>
-              <button
-                onClick={toggleMute}
-                className={`p-3 rounded-full transition-colors touch-target-large ${
-                  isMuted 
-                    ? 'bg-destructive/20 hover:bg-destructive/30 text-destructive' 
-                    : 'bg-primary/20 hover:bg-primary/30 text-primary'
-                }`}
-                title={isMuted ? t('audio.unmute') : t('audio.mute')}
-              >
-                {isMuted ? <VolumeX className="h-6 w-6" /> : <Volume2 className="h-6 w-6" />}
-              </button>
-            </div>
           </div>
           <p className="text-muted-foreground text-xl leading-relaxed">
             {t('feed.subtitle')}
@@ -217,18 +159,6 @@ const Feed = () => {
                 <p className="text-lg text-primary font-medium leading-relaxed flex-1">
                   {t('feed.welcome')}
                 </p>
-                <button
-                  onClick={() => handleTextToSpeech(t('feed.welcome'))}
-                  disabled={isMuted}
-                  className={`p-2 rounded-full transition-colors touch-target-large flex-shrink-0 ${
-                    isMuted 
-                      ? 'bg-muted/20 text-muted-foreground cursor-not-allowed' 
-                      : 'bg-primary/20 hover:bg-primary/30 text-primary'
-                  }`}
-                  title={t('audio.listen_welcome')}
-                >
-                  <Volume2 className="h-5 w-5" />
-                </button>
               </div>
             </div>
           )}
@@ -244,9 +174,6 @@ const Feed = () => {
                   isLiked={likedStories.has(story.id)}
                   onLike={() => handleLike(story.id)}
                   onConnect={() => handleConnect(story.id)}
-                  onViewOnMap={() => handleViewOnMap(story.id)}
-                  onTextToSpeech={handleTextToSpeech}
-                  isMuted={isMuted}
                 />
               </div>
             ))
@@ -271,9 +198,6 @@ const Feed = () => {
                     isLiked={likedStories.has(parseInt(story.id))}
                     onLike={() => handleLike(parseInt(story.id))}
                     onConnect={() => handleConnect(parseInt(story.id))}
-                    onViewOnMap={() => handleViewOnMap(parseInt(story.id))}
-                    onTextToSpeech={handleTextToSpeech}
-                    isMuted={isMuted}
                   />
                 </div>
               ))
@@ -285,22 +209,17 @@ const Feed = () => {
 };
 
 // Simplified story card component for rural users with limited digital literacy
-const SimplifiedStoryCard = ({ story, isLiked, onLike, onConnect, onViewOnMap, onTextToSpeech, isMuted }: {
+const SimplifiedStoryCard = ({ story, isLiked, onLike, onConnect }: {
   story: any;
   isLiked: boolean;
   onLike: () => void;
   onConnect: () => void;
-  onViewOnMap: () => void;
-  onTextToSpeech: (text: string) => void;
-  isMuted: boolean;
 }) => {
   const { t } = useLanguage();
 
   const getCategoryLabel = (category: string) => {
     return t(`category.${category}`) || category;
   };
-
-  const storyText = `${story.title}. ${story.description}. ${t('story.by_author', { author: story.author })}, ${t('story.from_community', { community: story.community })}`;
 
   return (
     <div className="bg-card rounded-3xl shadow-xl overflow-hidden border-2 border-border hover:shadow-2xl transition-all duration-300">
@@ -320,22 +239,8 @@ const SimplifiedStoryCard = ({ story, isLiked, onLike, onConnect, onViewOnMap, o
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="px-4 py-2 rounded-full text-sm font-bold border-2 bg-primary/10 text-primary border-primary/30">
-              {getCategoryLabel(story.category)}
-            </div>
-            <button
-              onClick={() => onTextToSpeech(storyText)}
-              disabled={isMuted}
-              className={`p-3 rounded-full transition-colors touch-target-large ${
-                isMuted 
-                  ? 'bg-muted/20 text-muted-foreground cursor-not-allowed' 
-                  : 'bg-accent/20 hover:bg-accent/30 text-accent'
-              }`}
-              title={t('audio.listen_story')}
-            >
-              <Volume2 className="h-5 w-5" />
-            </button>
+          <div className="px-4 py-2 rounded-full text-sm font-bold border-2 bg-primary/10 text-primary border-primary/30">
+            {getCategoryLabel(story.category)}
           </div>
         </div>
       </div>
@@ -374,22 +279,13 @@ const SimplifiedStoryCard = ({ story, isLiked, onLike, onConnect, onViewOnMap, o
             {isLiked ? t('story.supported') : t('story.support')}
           </button>
           
-          <div className="grid grid-cols-2 gap-4">
-            <button
-              onClick={onConnect}
-              className="flex items-center justify-center gap-2 bg-secondary/20 hover:bg-secondary/30 text-secondary-foreground font-bold py-3 px-4 rounded-2xl transition-colors text-lg border-2 border-secondary/50 touch-target-large"
-            >
-              <Users className="w-5 h-5" />
-              {t('story.connect')}
-            </button>
-            <button
-              onClick={onViewOnMap}
-              className="bg-accent/20 hover:bg-accent/30 text-accent-foreground font-bold py-3 px-4 rounded-2xl transition-colors flex items-center justify-center text-lg border-2 border-accent/50 touch-target-large"
-            >
-              <MapPin className="w-5 h-5" />
-              {t('story.location')}
-            </button>
-          </div>
+          <button
+            onClick={onConnect}
+            className="w-full flex items-center justify-center gap-2 bg-secondary/20 hover:bg-secondary/30 text-secondary-foreground font-bold py-3 px-4 rounded-2xl transition-colors text-lg border-2 border-secondary/50 touch-target-large"
+          >
+            <Users className="w-5 h-5" />
+            {t('story.connect')}
+          </button>
         </div>
       </div>
     </div>

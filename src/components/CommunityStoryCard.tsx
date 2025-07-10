@@ -1,8 +1,9 @@
 
-import { Heart, Users, MapPin, Calendar } from "lucide-react";
+import { Heart, Users, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CommunityStory {
   id: number;
@@ -21,10 +22,11 @@ interface CommunityStoryCardProps {
   story: CommunityStory;
   onLike?: () => void;
   onConnect?: () => void;
-  onViewOnMap?: () => void;
 }
 
-const CommunityStoryCard = ({ story, onLike, onConnect, onViewOnMap }: CommunityStoryCardProps) => {
+const CommunityStoryCard = ({ story, onLike, onConnect }: CommunityStoryCardProps) => {
+  const { t } = useLanguage();
+
   const getCategoryColor = (category: string) => {
     const colors = {
       traditions: "bg-orange-100 text-orange-800",
@@ -40,17 +42,7 @@ const CommunityStoryCard = ({ story, onLike, onConnect, onViewOnMap }: Community
   };
 
   const getCategoryLabel = (category: string) => {
-    const labels = {
-      traditions: "Traditions",
-      crafts: "Crafts",
-      music: "Music",
-      agriculture: "Agriculture",
-      celebrations: "Celebrations",
-      traditional_dances: "Traditional Dances",
-      elder_wisdom: "Elder Wisdom",
-      traditional_clothes: "Traditional Clothes"
-    };
-    return labels[category as keyof typeof labels] || category;
+    return t(`category.${category}`) || category;
   };
 
   const showLocation = story.community || story.province;
@@ -72,13 +64,12 @@ const CommunityStoryCard = ({ story, onLike, onConnect, onViewOnMap }: Community
         <div className="absolute bottom-4 left-4 text-white">
           <h3 className="text-xl font-bold mb-1">{story.title}</h3>
           {showLocation && (
-            <div className="flex items-center gap-1 text-sm mb-1">
-              <MapPin className="h-3 w-3" />
+            <div className="text-sm mb-1">
               {story.community && story.province ? `${story.community}, ${story.province}` : story.community || story.province}
             </div>
           )}
           {story.author && (
-            <div className="text-xs opacity-90">by {story.author}</div>
+            <div className="text-xs opacity-90">{t('story.by_author', { author: story.author })}</div>
           )}
         </div>
       </div>
@@ -101,7 +92,7 @@ const CommunityStoryCard = ({ story, onLike, onConnect, onViewOnMap }: Community
             className="flex-1"
           >
             <Heart className="h-4 w-4 mr-1" />
-            Support
+            {t('story.support')}
           </Button>
           <Button 
             size="sm"
@@ -109,14 +100,7 @@ const CommunityStoryCard = ({ story, onLike, onConnect, onViewOnMap }: Community
             className="flex-1"
           >
             <Users className="h-4 w-4 mr-1" />
-            Connect
-          </Button>
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={onViewOnMap}
-          >
-            <MapPin className="h-4 w-4" />
+            {t('story.connect')}
           </Button>
         </div>
       </CardContent>

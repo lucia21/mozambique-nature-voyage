@@ -2,12 +2,12 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, Camera, Heart, Share2, Plus, MapPin } from "lucide-react";
+import { Users, Camera, Plus } from "lucide-react";
 import Header from "@/components/Header";
 import CommunityStoryCard from "@/components/CommunityStoryCard";
-import CommunityMap from "@/components/CommunityMap";
 import CommunityGallery from "@/components/CommunityGallery";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CommunityStory {
   id: number;
@@ -25,6 +25,7 @@ interface CommunityStory {
 const Index = () => {
   const [activeTab, setActiveTab] = useState("stories");
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const communityStories: CommunityStory[] = [
     {
@@ -101,84 +102,24 @@ const Index = () => {
     }
   ];
 
-  // Rural communities for the map (different from main stories)
-  const mapCommunities: CommunityStory[] = [
-    {
-      id: 8,
-      title: "Rice Farming Community",
-      community: "Beira Rural",
-      province: "Sofala",
-      author: "",
-      description: "Traditional rice farming methods passed down through generations in rural Sofala province.",
-      image: "/lovable-uploads/cfe69b25-dc8d-4ab2-902e-c1956ae3bef5.png",
-      category: "agriculture",
-      date: "2024-01-01",
-      coordinates: [-19.8436, 34.8389] as [number, number]
-    },
-    {
-      id: 9,
-      title: "Cattle Herding Traditions",
-      community: "Rural Inhambane",
-      province: "Inhambane",
-      author: "",
-      description: "Young herders maintaining ancient cattle traditions in rural communities.",
-      image: "/lovable-uploads/e28a1b77-3e08-4174-8235-39f5df2a429d.png",
-      category: "traditions",
-      date: "2024-01-02",
-      coordinates: [-24.2, 35.0] as [number, number]
-    },
-    {
-      id: 10,
-      title: "Artisan Community",
-      community: "Rural Nampula",
-      province: "Nampula",
-      author: "",
-      description: "Traditional craft makers creating beautiful sculptures and pottery in rural villages.",
-      image: "/lovable-uploads/95d8d759-a19d-4fb0-9f4b-972190223e18.png",
-      category: "crafts",
-      date: "2024-01-03",
-      coordinates: [-15.5, 39.5] as [number, number]
-    },
-    {
-      id: 11,
-      title: "Salt Production Community",
-      community: "Rural Gaza",
-      province: "Gaza",
-      author: "",
-      description: "Traditional salt harvesting methods using ancient techniques by the coast.",
-      image: "/lovable-uploads/df55f51e-bda1-469e-8bb2-6fffac05d32f.png",
-      category: "traditions",
-      date: "2024-01-04",
-      coordinates: [-24.5, 33.5] as [number, number]
-    }
-  ];
-
   const handleShareStory = () => {
     toast({
-      title: "Share Your Story",
-      description: "Story sharing feature coming soon! Your voice matters to us.",
+      title: t('story.share_title'),
+      description: t('story.share_desc'),
     });
   };
 
   const handleLikeStory = (storyTitle: string) => {
     toast({
-      title: "Story Liked!",
-      description: `You liked "${storyTitle}"`,
+      title: t('story.liked_title'),
+      description: t('story.liked_desc', { title: storyTitle }),
     });
   };
 
   const handleConnectCommunity = (community: string) => {
     toast({
-      title: "Connecting...",
-      description: `Connecting with ${community} community`,
-    });
-  };
-
-  const handleViewOnMap = (story: CommunityStory) => {
-    setActiveTab("map");
-    toast({
-      title: "Map View",
-      description: `Showing ${story.community} on the map`,
+      title: t('story.connecting_title'),
+      description: t('story.connecting_desc', { community }),
     });
   };
 
@@ -191,14 +132,14 @@ const Index = () => {
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200&h=600&fit=crop')] bg-cover bg-center opacity-30" />
         <div className="relative text-center text-foreground max-w-2xl mx-auto px-4">
           <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            Nossa Voz <span className="text-primary">Moçambique</span>
+            {t('hero.title')} <span className="text-primary">{t('hero.mozambique')}</span>
           </h1>
           <p className="text-lg md:text-xl mb-6 opacity-90">
-            A platform where rural communities share their stories, traditions, and way of life
+            {t('hero.subtitle')}
           </p>
           <Button size="lg" className="bg-primary hover:bg-primary/90" onClick={handleShareStory}>
             <Plus className="mr-2 h-5 w-5" />
-            Share Your Story
+            {t('hero.share_story')}
           </Button>
         </div>
       </section>
@@ -206,30 +147,26 @@ const Index = () => {
       {/* Main Content */}
       <section className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
+          <TabsList className="grid w-full grid-cols-3 mb-8">
             <TabsTrigger value="stories" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
-              Community Stories
+              {t('tabs.stories')}
             </TabsTrigger>
             <TabsTrigger value="languages" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
-              Our Languages
-            </TabsTrigger>
-            <TabsTrigger value="map" className="flex items-center gap-2">
-              <MapPin className="h-4 w-4" />
-              Communities Map
+              {t('tabs.languages')}
             </TabsTrigger>
             <TabsTrigger value="gallery" className="flex items-center gap-2">
               <Camera className="h-4 w-4" />
-              Community Gallery
+              {t('tabs.gallery')}
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="stories" className="space-y-6">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold mb-4">Stories from Our Communities</h2>
+              <h2 className="text-3xl font-bold mb-4">{t('stories.title')}</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Real stories from real people sharing their culture, traditions, dances, and daily life in rural Mozambique
+                {t('stories.subtitle')}
               </p>
             </div>
             
@@ -240,7 +177,6 @@ const Index = () => {
                   story={story} 
                   onLike={() => handleLikeStory(story.title)}
                   onConnect={() => handleConnectCommunity(story.community)}
-                  onViewOnMap={() => handleViewOnMap(story)}
                 />
               ))}
             </div>
@@ -248,22 +184,22 @@ const Index = () => {
             {/* Call to Action */}
             <Card className="p-6 text-center bg-gradient-to-br from-primary/5 to-secondary/5">
               <Users className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Join Our Community</h3>
+              <h3 className="text-lg font-semibold mb-2">{t('cta.join_title')}</h3>
               <p className="text-muted-foreground mb-4">
-                Do you have a story to tell? Share your traditions, culture, dances, and way of life with the world.
+                {t('cta.join_desc')}
               </p>
               <Button onClick={handleShareStory}>
                 <Plus className="mr-2 h-4 w-4" />
-                Share Your Story
+                {t('cta.share_button')}
               </Button>
             </Card>
           </TabsContent>
 
           <TabsContent value="languages" className="space-y-6">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold mb-4">Languages of Mozambique</h2>
+              <h2 className="text-3xl font-bold mb-4">{t('languages.title')}</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Celebrating the linguistic diversity across our beautiful country
+                {t('languages.subtitle')}
               </p>
             </div>
             
@@ -271,85 +207,74 @@ const Index = () => {
             <div className="relative h-64 rounded-lg overflow-hidden mb-8">
               <img
                 src="/lovable-uploads/e5eedeb9-ea38-4ef0-b173-f1a2a6fcf2d2.png"
-                alt="Languages of Mozambique"
+                alt={t('languages.hero_alt')}
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6 text-white">
-                <h3 className="text-2xl font-bold mb-2">Multilingual Mozambique</h3>
-                <p className="text-sm opacity-90">Welcome in many languages</p>
+                <h3 className="text-2xl font-bold mb-2">{t('languages.hero_title')}</h3>
+                <p className="text-sm opacity-90">{t('languages.hero_subtitle')}</p>
               </div>
             </div>
 
             {/* Languages Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <Card className="p-6">
-                <h3 className="text-xl font-semibold mb-3">Portuguese</h3>
-                <p className="text-muted-foreground mb-2">Official Language</p>
-                <p className="text-sm">The official language of Mozambique, used in education, government, and formal communication.</p>
+                <h3 className="text-xl font-semibold mb-3">{t('languages.portuguese')}</h3>
+                <p className="text-muted-foreground mb-2">{t('languages.official')}</p>
+                <p className="text-sm">{t('languages.portuguese_desc')}</p>
               </Card>
               
               <Card className="p-6">
-                <h3 className="text-xl font-semibold mb-3">Makhuwa</h3>
-                <p className="text-muted-foreground mb-2">Northern Mozambique</p>
-                <p className="text-sm">The most widely spoken Bantu language in Mozambique, primarily in Nampula and Cabo Delgado provinces.</p>
+                <h3 className="text-xl font-semibold mb-3">{t('languages.makhuwa')}</h3>
+                <p className="text-muted-foreground mb-2">{t('languages.northern')}</p>
+                <p className="text-sm">{t('languages.makhuwa_desc')}</p>
               </Card>
               
               <Card className="p-6">
-                <h3 className="text-xl font-semibold mb-3">Changana</h3>
-                <p className="text-muted-foreground mb-2">Southern Mozambique</p>
-                <p className="text-sm">Spoken mainly in Gaza and Maputo provinces, part of the Tsonga language family.</p>
+                <h3 className="text-xl font-semibold mb-3">{t('languages.changana')}</h3>
+                <p className="text-muted-foreground mb-2">{t('languages.southern')}</p>
+                <p className="text-sm">{t('languages.changana_desc')}</p>
               </Card>
               
               <Card className="p-6">
-                <h3 className="text-xl font-semibold mb-3">Sena</h3>
-                <p className="text-muted-foreground mb-2">Central Mozambique</p>
-                <p className="text-sm">Primarily spoken in Sofala province, along the Zambezi River valley.</p>
+                <h3 className="text-xl font-semibold mb-3">{t('languages.sena')}</h3>
+                <p className="text-muted-foreground mb-2">{t('languages.central')}</p>
+                <p className="text-sm">{t('languages.sena_desc')}</p>
               </Card>
               
               <Card className="p-6">
-                <h3 className="text-xl font-semibold mb-3">Ndau</h3>
-                <p className="text-muted-foreground mb-2">Manica & Sofala</p>
-                <p className="text-sm">Spoken in the mountainous regions of Manica and parts of Sofala province.</p>
+                <h3 className="text-xl font-semibold mb-3">{t('languages.ndau')}</h3>
+                <p className="text-muted-foreground mb-2">{t('languages.manica_sofala')}</p>
+                <p className="text-sm">{t('languages.ndau_desc')}</p>
               </Card>
               
               <Card className="p-6">
-                <h3 className="text-xl font-semibold mb-3">Nyanja</h3>
-                <p className="text-muted-foreground mb-2">Tete Province</p>
-                <p className="text-sm">Common in Tete province, especially near the borders with Malawi and Zambia.</p>
+                <h3 className="text-xl font-semibold mb-3">{t('languages.nyanja')}</h3>
+                <p className="text-muted-foreground mb-2">{t('languages.tete')}</p>
+                <p className="text-sm">{t('languages.nyanja_desc')}</p>
               </Card>
             </div>
 
             {/* Language Preservation Call to Action */}
             <Card className="p-6 text-center bg-gradient-to-br from-primary/5 to-secondary/5">
               <Users className="h-12 w-12 text-primary mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Preserve Our Languages</h3>
+              <h3 className="text-lg font-semibold mb-2">{t('languages.preserve_title')}</h3>
               <p className="text-muted-foreground mb-4">
-                Help us document and preserve the rich linguistic heritage of Mozambique by sharing stories in your native language.
+                {t('languages.preserve_desc')}
               </p>
               <Button onClick={handleShareStory}>
                 <Plus className="mr-2 h-4 w-4" />
-                Share in Your Language
+                {t('languages.preserve_button')}
               </Button>
             </Card>
           </TabsContent>
 
-          <TabsContent value="map" className="space-y-6">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold mb-4">Rural Communities Across Mozambique</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Discover rural communities and their traditional practices across our beautiful country
-              </p>
-            </div>
-            
-            <CommunityMap stories={mapCommunities} onViewStory={handleConnectCommunity} />
-          </TabsContent>
-
           <TabsContent value="gallery" className="space-y-6">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold mb-4">Community Gallery</h2>
+              <h2 className="text-3xl font-bold mb-4">{t('gallery.title')}</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Photos shared by our communities showcasing their traditions, culture, and celebrations
+                {t('gallery.subtitle')}
               </p>
             </div>
             
