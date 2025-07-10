@@ -53,18 +53,18 @@ const CommunityStoryCard = ({ story, onLike, onConnect }: CommunityStoryCardProp
         <img
           src={story.image}
           alt={story.title}
-          className="w-full h-48 object-cover"
+          className="w-full h-40 sm:h-48 object-cover"
         />
-        <div className="absolute top-4 right-4">
-          <Badge className={getCategoryColor(story.category)}>
+        <div className="absolute top-2 sm:top-4 right-2 sm:right-4">
+          <Badge className={`${getCategoryColor(story.category)} text-xs sm:text-sm`}>
             {getCategoryLabel(story.category)}
           </Badge>
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        <div className="absolute bottom-4 left-4 text-white">
-          <h3 className="text-xl font-bold mb-1">{story.title}</h3>
+        <div className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 text-white">
+          <h3 className="text-base sm:text-xl font-bold mb-1 leading-tight">{story.title}</h3>
           {showLocation && (
-            <div className="text-sm mb-1">
+            <div className="text-xs sm:text-sm mb-1">
               {story.community && story.province ? `${story.community}, ${story.province}` : story.community || story.province}
             </div>
           )}
@@ -74,12 +74,12 @@ const CommunityStoryCard = ({ story, onLike, onConnect }: CommunityStoryCardProp
         </div>
       </div>
       
-      <CardContent className="p-6">
-        <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
+      <CardContent className="p-4 sm:p-6">
+        <p className="text-muted-foreground mb-3 sm:mb-4 text-xs sm:text-sm leading-relaxed">
           {story.description}
         </p>
         
-        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3 sm:mb-4">
           <Calendar className="h-3 w-3" />
           {new Date(story.date).toLocaleDateString('pt-PT')}
         </div>
@@ -89,18 +89,20 @@ const CommunityStoryCard = ({ story, onLike, onConnect }: CommunityStoryCardProp
             variant="outline" 
             size="sm"
             onClick={onLike}
-            className="flex-1"
+            className="flex-1 text-xs sm:text-sm touch-target-large"
           >
-            <Heart className="h-4 w-4 mr-1" />
-            {t('story.support')}
+            <Heart className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+            <span className="hidden sm:inline">{t('story.support')}</span>
+            <span className="sm:hidden">❤️</span>
           </Button>
           <Button 
             size="sm"
             onClick={onConnect}
-            className="flex-1"
+            className="flex-1 text-xs sm:text-sm touch-target-large"
           >
-            <Users className="h-4 w-4 mr-1" />
-            {t('story.connect')}
+            <Users className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+            <span className="hidden sm:inline">{t('story.connect')}</span>
+            <span className="sm:hidden">👥</span>
           </Button>
         </div>
       </CardContent>

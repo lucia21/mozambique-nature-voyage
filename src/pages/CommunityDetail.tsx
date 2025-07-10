@@ -1,41 +1,61 @@
 
 import { useParams } from 'react-router-dom';
-import { useCommunity, useJoinCommunity, useLeaveCommunity } from '@/hooks/useCommunities';
-import { useAuth } from '@/hooks/useAuth';
+import { useCommunities } from '@/hooks/useCommunities';
 import Header from '@/components/Header';
-import CommunityStoryCard from '@/components/CommunityStoryCard';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Loader2, Users, MapPin } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Users, Calendar, Loader2 } from 'lucide-react';
-import { useState, useMemo } from 'react';
+import { Button } from '@/components/ui/button';
+import CommunityStoryCard from '@/components/CommunityStoryCard';
+import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const CommunityDetail = () => {
-  const { id } = useParams<{ id: string }>();
-  const { user } = useAuth();
-  const { data: community, isLoading, error } = useCommunity(id!);
-  const joinCommunity = useJoinCommunity();
-  const leaveCommunity = useLeaveCommunity();
+  const { id } = useParams();
+  const { data: communities, isLoading } = useCommunities();
+  const { toast } = useToast();
+  const { t } = useLanguage();
 
-  const isMember = useMemo(() => {
-    if (!user || !community?.community_members) return false;
-    return community.community_members.some(member => member.user_id === user.id);
-  }, [user, community]);
+  // Sample stories for demonstration
+  const sampleStories = [
+    {
+      id: 1,
+      title: "Traditional Fishing Techniques",
+      community: "Praia do Tofo",
+      province: "Inhambane",
+      author: "João Silva",
+      description: "Learning the ancient ways of fishing from our elders, using traditional dhows and nets passed down through generations.",
+      image: "/lovable-uploads/9eec9d57-5f5d-441b-accc-3ff47381265a.png",
+      category: "traditions",
+      date: "2024-01-15",
+      coordinates: [-23.8758, 35.5477] as [number, number],
+    },
+    {
+      id: 2,
+      title: "Capulana Weaving Stories",
+      community: "Praia do Tofo",
+      province: "Inhambane",
+      author: "Maria Santos",
+      description: "Every capulana tells a story. In our community, we keep the tradition alive by teaching young women the art of weaving and pattern creation.",
+      image: "/lovable-uploads/e783d8ae-ef1b-454e-ab3e-9a6139644650.png",
+      category: "traditional_clothes",
+      date: "2024-01-10",
+      coordinates: [-23.8758, 35.5477] as [number, number],
+    },
+  ];
 
-  const handleJoinLeave = async () => {
-    if (!user || !community) return;
+  const handleLikeStory = (storyTitle: string) => {
+    toast({
+      title: t('story.liked_title'),
+      description: t('story.liked_desc', { title: storyTitle }),
+    });
+  };
 
-    if (isMember) {
-      await leaveCommunity.mutateAsync({
-        communityId: community.id,
-        userId: user.id,
-      });
-    } else {
-      await joinCommunity.mutateAsync({
-        communityId: community.id,
-        userId: user.id,
-      });
-    }
+  const handleConnectCommunity = (community: string) => {
+    toast({
+      title: t('story.connecting_title'),
+      description: t('story.connecting_desc', { community }),
+    });
   };
 
   if (isLoading) {
@@ -44,148 +64,119 @@ const CommunityDetail = () => {
         <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-center min-h-[400px]">
-            <Loader2 className="h-8 w-8 animate-spin" />
+            <Loader2 className="h-16 w-16 animate-spin text-primary" />
+            <span className="ml-4 text-xl">{t('common.loading')}</span>
           </div>
         </div>
       </div>
     );
   }
 
-  if (error || !community) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-destructive mb-2">Community Not Found</h2>
-            <p className="text-muted-foreground">The community you're looking for doesn't exist.</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // For demo purposes, we'll show a sample community
+  const community = {
+    id: '1',
+    name: 'Praia do Tofo',
+    location: 'Inhambane',
+    province: 'Inhambane',
+    description: 'A vibrant coastal community known for traditional fishing and marine conservation.',
+    banner_image: '/lovable-uploads/9eec9d57-5f5d-441b-accc-3ff47381265a.png',
+    member_count: 245,
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
       
-      {/* Community Header */}
-      <div className="relative">
-        {community.banner_image ? (
-          <div className="h-64 md:h-80 overflow-hidden">
-            <img
-              src={community.banner_image}
-              alt={community.name}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/40" />
-          </div>
-        ) : (
-          <div className="h-64 md:h-80 bg-gradient-to-r from-primary/20 to-secondary/20" />
-        )}
-        
-        <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-          <div className="container mx-auto">
-            <div className="flex items-end justify-between">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <h1 className="text-3xl md:text-4xl font-bold">{community.name}</h1>
-                  {community.province && (
-                    <Badge variant="secondary">{community.province}</Badge>
-                  )}
-                </div>
-                {community.location && (
-                  <div className="flex items-center gap-1 text-white/90">
-                    <MapPin className="h-4 w-4" />
-                    <span>{community.location}</span>
-                  </div>
-                )}
+      {/* Community Hero Section - Mobile Responsive */}
+      <div className="relative h-48 sm:h-64 md:h-80 lg:h-96">
+        <img
+          src={community.banner_image}
+          alt={community.name}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        <div className="absolute bottom-4 left-4 right-4 text-white">
+          <div className="max-w-4xl">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-4">
+              {community.name}
+            </h1>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm sm:text-base opacity-90">
+              <div className="flex items-center gap-1">
+                <MapPin className="h-4 w-4" />
+                {community.location}, {community.province}
               </div>
-              
-              {user && (
-                <Button
-                  onClick={handleJoinLeave}
-                  disabled={joinCommunity.isPending || leaveCommunity.isPending}
-                  variant={isMember ? "outline" : "default"}
-                  className={isMember ? "border-white text-white hover:bg-white hover:text-black" : ""}
-                >
-                  {joinCommunity.isPending || leaveCommunity.isPending ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  ) : null}
-                  {isMember ? 'Leave Community' : 'Join Community'}
-                </Button>
-              )}
+              <div className="flex items-center gap-1">
+                <Users className="h-4 w-4" />
+                {community.member_count} {t('community.members')}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Community Info */}
-          <div className="lg:col-span-1">
-            <Card>
-              <CardHeader>
-                <CardTitle>About</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
-                  {community.description || 'No description available.'}
-                </p>
-                
-                <div className="flex items-center gap-2 text-sm">
-                  <Users className="h-4 w-4" />
-                  <span>{community.community_members?.length || 0} members</span>
-                </div>
-                
-                <div className="flex items-center gap-2 text-sm">
-                  <Calendar className="h-4 w-4" />
-                  <span>Created {new Date(community.created_at).toLocaleDateString()}</span>
+      {/* Main Content - Mobile Responsive */}
+      <div className="container mx-auto px-4 py-6 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+          {/* Community Info Sidebar - Mobile First */}
+          <div className="lg:col-span-1 order-2 lg:order-1">
+            <Card className="sticky top-4">
+              <CardContent className="p-4 sm:p-6">
+                <div className="space-y-4 sm:space-y-6">
+                  <div>
+                    <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">
+                      {t('community.about')}
+                    </h2>
+                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                      {community.description}
+                    </p>
+                  </div>
+
+                  <div className="border-t pt-4">
+                    <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">
+                      {t('community.stats')}
+                    </h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">{t('community.members')}</span>
+                        <span className="font-medium">{community.member_count}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">{t('community.stories')}</span>
+                        <span className="font-medium">{sampleStories.length}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Button className="w-full touch-target-large">
+                    <Users className="mr-2 h-4 w-4" />
+                    {t('community.join')}
+                  </Button>
                 </div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Stories */}
-          <div className="lg:col-span-2">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">Community Stories</h2>
-              <p className="text-muted-foreground">
-                Stories shared by members of this community
+          {/* Stories Grid - Mobile Responsive */}
+          <div className="lg:col-span-2 order-1 lg:order-2">
+            <div className="mb-4 sm:mb-6">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold">
+                {t('community.stories_from')} {community.name}
+              </h2>
+              <p className="text-sm sm:text-base text-muted-foreground mt-1 sm:mt-2">
+                {t('community.discover_stories')}
               </p>
             </div>
 
-            {community.stories && community.stories.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {community.stories.map((story) => (
-                  <CommunityStoryCard
-                    key={story.id}
-                    story={{
-                      id: parseInt(story.id),
-                      title: story.title,
-                      community: community.name,
-                      province: story.province || community.province || '',
-                      author: 'Community Member',
-                      description: story.description,
-                      image: story.image_url || '/placeholder.svg',
-                      category: story.category,
-                      date: story.created_at,
-                      coordinates: [0, 0] as [number, number],
-                    }}
-                    onLike={() => console.log('Liked story:', story.id)}
-                    onConnect={() => console.log('Connect to:', story.id)}
-                    onViewOnMap={() => console.log('View on map:', story.id)}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-12">
-                <h3 className="text-xl font-semibold mb-2">No Stories Yet</h3>
-                <p className="text-muted-foreground">
-                  This community hasn't shared any stories yet.
-                </p>
-              </div>
-            )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              {sampleStories.map((story) => (
+                <CommunityStoryCard
+                  key={story.id}
+                  story={story}
+                  onLike={() => handleLikeStory(story.title)}
+                  onConnect={() => handleConnectCommunity(story.community)}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
